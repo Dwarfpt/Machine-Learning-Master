@@ -19,4 +19,4 @@ jobs:
       - name: Build the SQLite DB from the CSV
         run: python -c "from nrg import db; print(db.init_db(), 'games loaded')"
       - name: Run tests (no LLM, no n8n - rule-based agent and outbox are used)
-        run: pytest -q
+        run: python -m pytest -q
