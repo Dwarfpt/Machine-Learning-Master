@@ -1,0 +1,4 @@
+# Local LLM for the AI agent (CPU wheels, no compiler needed):
+#   pip install -r requirements-llm.txt --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+llama-cpp-python==0.3.36
+huggingface-hub

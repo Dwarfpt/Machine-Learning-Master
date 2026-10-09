@@ -1,0 +1,9 @@
+# CPU-only variant of the LLM server (no NVIDIA GPU): set dockerfile: Dockerfile.llm-cpu in docker-compose.yml
+FROM python:3.12-slim
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential cmake curl \
+    && rm -rf /var/lib/apt/lists/*
+RUN pip install --no-cache-dir "llama-cpp-python[server]==0.3.36" \
+    --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+EXPOSE 8080
+CMD ["python", "-m", "llama_cpp.server", "--model", "/models/qwen2.5-3b-instruct-q4_k_m.gguf", \
+     "--chat_format", "chatml", "--n_ctx", "8192", "--host", "0.0.0.0", "--port", "8080"]

@@ -1,0 +1,10 @@
+# llama-cpp-python OpenAI-compatible server on the NVIDIA GPU (CUDA 12.x, prebuilt cu124 wheel - no compilation).
+# Requires Docker Desktop with WSL2 + NVIDIA driver. Without a GPU use Dockerfile.llm-cpu.
+FROM nvidia/cuda:12.6.3-runtime-ubuntu24.04
+RUN apt-get update && apt-get install -y --no-install-recommends python3 python3-pip libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
+RUN pip install --no-cache-dir --break-system-packages "llama-cpp-python[server]==0.3.4" \
+    --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu124
+EXPOSE 8080
+CMD ["python3", "-m", "llama_cpp.server", "--model", "/models/qwen2.5-3b-instruct-q4_k_m.gguf", \
+     "--chat_format", "chatml", "--n_ctx", "8192", "--n_gpu_layers", "-1", "--host", "0.0.0.0", "--port", "8080"]

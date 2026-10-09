@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.env
+data/games.db
+data/outbox.jsonl
+mlflow.db
+mlruns/
+mlartifacts/
+.ipynb_checkpoints/
+models/*.gguf
+n8n/google_service_account.json
+n8n/credentials_google.json

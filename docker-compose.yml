@@ -1,0 +1,66 @@
+# Full stack: API + web app + n8n + Mailpit + local LLM (llama-cpp-python) (+ MLflow UI)
+#   docker compose up -d --build
+#   model for the agent (once, ~2 GB): see README -> models/qwen2.5-3b-instruct-q4_k_m.gguf
+#   docker compose exec n8n sh /workflows/setup_n8n.sh        # import workflow + Mailpit SMTP, activate
+#   docker compose restart n8n
+#   n8n: http://localhost:5678 · test mailbox (Mailpit): http://localhost:8025
+x-nrg-env: &nrg-env
+  LLM_BASE_URL: http://llm:8080
+  LLM_NAME: qwen2.5-3b-instruct-q4_k_m
+  N8N_WEBHOOK_URL: http://n8n:5678/webhook/nrg-action
+  N8N_DECISION_WEBHOOK_URL: http://n8n:5678/webhook/nrg-decision
+  NRG_API_PUBLIC_URL: http://localhost:8000
+  NRG_APPROVAL_SECRET: ${NRG_APPROVAL_SECRET:-change-me}
+  MLFLOW_TRACKING_URI: sqlite:////app/mlflow.db
+
+services:
+  api:
+    build: .
+    ports: ["8000:8000"]
+    environment: *nrg-env
+    volumes: ["./data:/app/data", "./artifacts:/app/artifacts", "./reports:/app/reports"]
+    depends_on: [llm]
+
+  app:
+    build: .
+    command: streamlit run app/streamlit_app.py --server.port 8501 --server.address 0.0.0.0 --server.headless true
+    ports: ["8501:8501"]
+    environment: *nrg-env
+    volumes: ["./data:/app/data", "./artifacts:/app/artifacts", "./reports:/app/reports"]
+    depends_on: [api]
+
+  n8n:
+    image: n8nio/n8n:latest
+    ports: ["5678:5678"]
+    environment:
+      NRG_API_URL: http://api:8000
+      NRG_MAIL_FROM: ${NRG_MAIL_FROM:-nrg-bot@example.com}
+      NRG_MANAGER_EMAIL: ${NRG_MANAGER_EMAIL:-manager@example.com}
+      NRG_TEAM_EMAIL: ${NRG_TEAM_EMAIL:-dev-team@example.com}
+      N8N_BLOCK_ENV_ACCESS_IN_NODE: "false"
+      GENERIC_TIMEZONE: Europe/Chisinau
+    volumes: ["n8n_data:/home/node/.n8n", "./n8n:/workflows:ro"]
+    depends_on: [mailpit]
+
+  mailpit:  # local test mailbox: SMTP on 1025, web UI on http://localhost:8025
+    image: axllent/mailpit:latest
+    ports: ["8025:8025", "1025:1025"]
+
+  llm:  # llama-cpp-python server (OpenAI-compatible) on the NVIDIA GPU; no GPU -> dockerfile: Dockerfile.llm-cpu
+    build: {context: ., dockerfile: Dockerfile.llm}
+    ports: ["8081:8080"]  # host 8081 (8080 is often reserved on Windows); local runs: LLM_BASE_URL=http://localhost:8081
+    volumes: ["./models:/models:ro"]
+    deploy:
+      resources:
+        reservations:
+          devices: [{driver: nvidia, count: all, capabilities: [gpu]}]
+
+  mlflow:
+    build: .
+    command: mlflow ui --backend-store-uri sqlite:////app/mlflow.db --host 0.0.0.0 --port 5000
+    ports: ["5000:5000"]
+    volumes: ["./mlflow.db:/app/mlflow.db"]
+    profiles: ["mlflow"]
+
+volumes:
+  n8n_data:

@@ -1,0 +1,643 @@
+{
+  "id": "nrgActionRouter1",
+  "name": "Negative Review Guard — action router (HITL)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "nrg-action",
+        "options": {}
+      },
+      "id": "9cfa0f5c-fb5a-506a-bf75-d3006aba5fb8",
+      "name": "Webhook: action created",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        200,
+        200
+      ],
+      "webhookId": "9d272dfa-3ee0-5b36-bac9-f92fba67d362"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "PUT_YOUR_SPREADSHEET_ID_HERE",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Actions",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "event": "action_created",
+            "action_id": "={{ $('Webhook: action created').item.json.body.action_id ?? '' }}",
+            "created_at": "={{ $('Webhook: action created').item.json.body.action.created_at ?? '' }}",
+            "title": "={{ $('Webhook: action created').item.json.body.action.title ?? '' }}",
+            "action_code": "={{ $('Webhook: action created').item.json.body.action.action_code ?? '' }}",
+            "cost_k": "={{ $('Webhook: action created').item.json.body.action.cost_k ?? '' }}",
+            "expected_benefit_k": "={{ $('Webhook: action created').item.json.body.action.expected_benefit_k ?? '' }}",
+            "status": "={{ $('Webhook: action created').item.json.body.action.status ?? '' }}",
+            "decided_by": "={{ $('Webhook: action created').item.json.body.action.decided_by ?? '' }}",
+            "proba_negative": "={{ $('Webhook: action created').item.json.body.proba_negative ?? '' }}",
+            "risk_level": "={{ $('Webhook: action created').item.json.body.risk_level ?? '' }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "event",
+              "displayName": "event",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "action_id",
+              "displayName": "action_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "action_code",
+              "displayName": "action_code",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cost_k",
+              "displayName": "cost_k",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "expected_benefit_k",
+              "displayName": "expected_benefit_k",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "decided_by",
+              "displayName": "decided_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "proba_negative",
+              "displayName": "proba_negative",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "risk_level",
+              "displayName": "risk_level",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "609a9aae-adbe-5db2-a119-ab35587859c5",
+      "name": "Log to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        440,
+        200
+      ],
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "googleApi": {
+          "id": "nrgGoogleSa00001",
+          "name": "Google Service Account"
+        }
+      },
+      "disabled": true,
+      "notes": "Run n8n/setup_google.py to enable (see README: Google Sheets)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "fb5bda68-25d4-5b96-afd7-294b4668712d",
+              "leftValue": "={{ $('Webhook: action created').item.json.body.requires_approval }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "662aa4f3-2ea4-5a74-97ce-206539edc184",
+      "name": "Needs approval?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        680,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $env.NRG_MAIL_FROM || 'nrg-bot@example.com' }}",
+        "toEmail": "={{ $env.NRG_MANAGER_EMAIL || 'manager@example.com' }}",
+        "subject": "=[NRG] Approval needed: {{ $('Webhook: action created').item.json.body.action.action_code }} for {{ $('Webhook: action created').item.json.body.action.title }}",
+        "emailFormat": "html",
+        "html": "=<h3>Negative Review Guard — approval needed</h3><p>Risk of a negative review: <b>{{ Math.round($('Webhook: action created').item.json.body.proba_negative * 100) }}%</b> ({{ $('Webhook: action created').item.json.body.risk_level }})</p><p>Game: <b>{{ $('Webhook: action created').item.json.body.action.title }}</b><br>Measure: <b>{{ $('Webhook: action created').item.json.body.action.action_code }}</b><br>Cost: {{ $('Webhook: action created').item.json.body.action.cost_k }} k$ · expected benefit: {{ Math.round($('Webhook: action created').item.json.body.action.expected_benefit_k) }} k$<br>Rationale: <i>{{ $('Webhook: action created').item.json.body.action.rationale }}</i></p><p><a href=\"{{ $('Webhook: action created').item.json.body.approve_url }}\">✅ Approve</a> &nbsp; | &nbsp; <a href=\"{{ $('Webhook: action created').item.json.body.reject_url }}\">❌ Reject</a></p>",
+        "options": {}
+      },
+      "id": "ca5e9817-05ca-5ba3-9fdd-41fe71b76526",
+      "name": "E-mail manager (approve/reject)",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        920,
+        80
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "nrgSmtpMailpit01",
+          "name": "SMTP (Mailpit)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NRG_API_URL || 'http://host.docker.internal:8000' }}/actions/{{ $('Webhook: action created').item.json.body.action_id }}/execute?token={{ $('Webhook: action created').item.json.body.token }}",
+        "options": {}
+      },
+      "id": "6161becc-e6e6-5520-ba87-7ea3c2bdee77",
+      "name": "Mark executed (auto)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        920,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $env.NRG_MAIL_FROM || 'nrg-bot@example.com' }}",
+        "toEmail": "={{ $env.NRG_TEAM_EMAIL || 'dev-team@example.com' }}",
+        "subject": "=[NRG] New task: {{ $('Webhook: action created').item.json.body.action.action_code }} — {{ $('Webhook: action created').item.json.body.action.title }}",
+        "emailFormat": "html",
+        "html": "=<h3>New preventive task (auto-approved)</h3><p>Game: <b>{{ $('Webhook: action created').item.json.body.action.title }}</b><br>Measure: <b>{{ $('Webhook: action created').item.json.body.action.action_code }}</b><br>Cost: {{ $('Webhook: action created').item.json.body.action.cost_k }} k$ · expected benefit: {{ Math.round($('Webhook: action created').item.json.body.action.expected_benefit_k) }} k$<br>Rationale: <i>{{ $('Webhook: action created').item.json.body.action.rationale }}</i></p>",
+        "options": {}
+      },
+      "id": "b7d801e0-6800-58bb-8898-4be132bf6182",
+      "name": "E-mail team (task created)",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1160,
+        320
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "nrgSmtpMailpit01",
+          "name": "SMTP (Mailpit)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "nrg-decision",
+        "options": {}
+      },
+      "id": "c0424808-ebe5-5266-8aa8-423d611167f0",
+      "name": "Webhook: decision",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        200,
+        600
+      ],
+      "webhookId": "beb30395-9ece-558a-834a-f6afc990f600"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "PUT_YOUR_SPREADSHEET_ID_HERE",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Actions",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "event": "action_decided",
+            "action_id": "={{ $('Webhook: decision').item.json.body.action_id ?? '' }}",
+            "created_at": "={{ $('Webhook: decision').item.json.body.action.created_at ?? '' }}",
+            "title": "={{ $('Webhook: decision').item.json.body.action.title ?? '' }}",
+            "action_code": "={{ $('Webhook: decision').item.json.body.action.action_code ?? '' }}",
+            "cost_k": "={{ $('Webhook: decision').item.json.body.action.cost_k ?? '' }}",
+            "expected_benefit_k": "={{ $('Webhook: decision').item.json.body.action.expected_benefit_k ?? '' }}",
+            "status": "={{ $('Webhook: decision').item.json.body.action.status ?? '' }}",
+            "decided_by": "={{ $('Webhook: decision').item.json.body.action.decided_by ?? '' }}",
+            "proba_negative": "={{ $('Webhook: decision').item.json.body.proba_negative ?? '' }}",
+            "risk_level": "={{ $('Webhook: decision').item.json.body.risk_level ?? '' }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "event",
+              "displayName": "event",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "action_id",
+              "displayName": "action_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "action_code",
+              "displayName": "action_code",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cost_k",
+              "displayName": "cost_k",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "expected_benefit_k",
+              "displayName": "expected_benefit_k",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "decided_by",
+              "displayName": "decided_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "proba_negative",
+              "displayName": "proba_negative",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "risk_level",
+              "displayName": "risk_level",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c3c1ae75-dcca-506d-b0fd-82398a2c53c5",
+      "name": "Log decision to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        440,
+        600
+      ],
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "googleApi": {
+          "id": "nrgGoogleSa00001",
+          "name": "Google Service Account"
+        }
+      },
+      "disabled": true,
+      "notes": "Run n8n/setup_google.py to enable (see README: Google Sheets)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "52b54a63-ed1e-5d87-9d85-4f7f2bf703e5",
+              "leftValue": "={{ $('Webhook: decision').item.json.body.action.status === 'approved' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "6bbdb892-826f-5495-a664-9f0cc405aa27",
+      "name": "Approved?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        680,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NRG_API_URL || 'http://host.docker.internal:8000' }}/actions/{{ $('Webhook: decision').item.json.body.action_id }}/execute?token={{ $('Webhook: decision').item.json.body.token }}",
+        "options": {}
+      },
+      "id": "fe4805b9-b7ab-5195-8039-f791dc3fa39d",
+      "name": "Mark executed (approved)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        920,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $env.NRG_MAIL_FROM || 'nrg-bot@example.com' }}",
+        "toEmail": "={{ $env.NRG_TEAM_EMAIL || 'dev-team@example.com' }}",
+        "subject": "=[NRG] Approved by manager: {{ $('Webhook: decision').item.json.body.action.action_code }} — {{ $('Webhook: decision').item.json.body.action.title }}",
+        "emailFormat": "html",
+        "html": "=<h3>Manager approved a preventive measure</h3><p>Game: <b>{{ $('Webhook: decision').item.json.body.action.title }}</b><br>Measure: <b>{{ $('Webhook: decision').item.json.body.action.action_code }}</b><br>Cost: {{ $('Webhook: decision').item.json.body.action.cost_k }} k$ · expected benefit: {{ Math.round($('Webhook: decision').item.json.body.action.expected_benefit_k) }} k$<br>Rationale: <i>{{ $('Webhook: decision').item.json.body.action.rationale }}</i></p><p>Approved by: {{ $('Webhook: decision').item.json.body.action.decided_by }}</p>",
+        "options": {}
+      },
+      "id": "d95e93dd-fffd-53f8-a2cb-78e36b6d954b",
+      "name": "E-mail team (approved task)",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1160,
+        500
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "nrgSmtpMailpit01",
+          "name": "SMTP (Mailpit)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $env.NRG_MAIL_FROM || 'nrg-bot@example.com' }}",
+        "toEmail": "={{ $env.NRG_TEAM_EMAIL || 'dev-team@example.com' }}",
+        "subject": "=[NRG] Rejected: {{ $('Webhook: decision').item.json.body.action.action_code }} — {{ $('Webhook: decision').item.json.body.action.title }}",
+        "emailFormat": "html",
+        "html": "=<p>The manager rejected this measure; no task created.</p><p>Game: <b>{{ $('Webhook: decision').item.json.body.action.title }}</b><br>Measure: <b>{{ $('Webhook: decision').item.json.body.action.action_code }}</b><br>Cost: {{ $('Webhook: decision').item.json.body.action.cost_k }} k$ · expected benefit: {{ Math.round($('Webhook: decision').item.json.body.action.expected_benefit_k) }} k$<br>Rationale: <i>{{ $('Webhook: decision').item.json.body.action.rationale }}</i></p>",
+        "options": {}
+      },
+      "id": "0ce0c485-4927-5a85-953e-9aad254bb8df",
+      "name": "E-mail team (rejected)",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        920,
+        720
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "nrgSmtpMailpit01",
+          "name": "SMTP (Mailpit)"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook: action created": {
+      "main": [
+        [
+          {
+            "node": "Log to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log to Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Needs approval?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Needs approval?": {
+      "main": [
+        [
+          {
+            "node": "E-mail manager (approve/reject)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mark executed (auto)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark executed (auto)": {
+      "main": [
+        [
+          {
+            "node": "E-mail team (task created)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook: decision": {
+      "main": [
+        [
+          {
+            "node": "Log decision to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log decision to Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Approved?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approved?": {
+      "main": [
+        [
+          {
+            "node": "Mark executed (approved)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "E-mail team (rejected)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark executed (approved)": {
+      "main": [
+        [
+          {
+            "node": "E-mail team (approved task)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}
