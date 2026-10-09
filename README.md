@@ -4,9 +4,32 @@
 
 🇷🇺 Русский · [🇷🇴 Română](README.ro.md) · [🇬🇧 English](README.en.md)
 
+[![tests](https://github.com/Dwarfpt/Machine-Learning-Master/actions/workflows/tests.yml/badge.svg)](https://github.com/Dwarfpt/Machine-Learning-Master/actions/workflows/tests.yml) ![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white) ![XGBoost](https://img.shields.io/badge/model-XGBoost-EB6C2D) ![SHAP](https://img.shields.io/badge/XAI-SHAP-8A2BE2) ![LLM](https://img.shields.io/badge/agent-Qwen2.5%20%C2%B7%20llama--cpp-4B5563) ![n8n](https://img.shields.io/badge/RPA-n8n-EA4B71?logo=n8n&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-Compose%20%2B%20GPU-2496ED?logo=docker&logoColor=white)
+
 End-to-end ML-система: **Данные → ML → Прогноз → Объяснение (SHAP) → AI-агент → Действие (n8n, Human-in-the-loop)**.
 Издатель видеоигр **до релиза** оценивает вероятность того, что игра получит негативный отзыв критиков, понимает *почему*,
 а агент выбирает окупающиеся меры предотвращения и запускает их (дорогие — после согласования менеджером).
+
+
+## Быстрый старт
+Весь стек (API, веб-приложение, LLM на GPU, n8n, почта):
+```bash
+git clone https://github.com/Dwarfpt/Machine-Learning-Master.git
+cd Machine-Learning-Master
+cp .env.example .env
+pip install huggingface_hub && hf download Qwen/Qwen2.5-3B-Instruct-GGUF qwen2.5-3b-instruct-q4_k_m.gguf --local-dir models
+docker compose up -d --build
+docker compose exec n8n sh /workflows/setup_n8n.sh && docker compose restart n8n
+```
+Затем откройте http://localhost:8501. Подробности — в разделе «Запуск», сценарий защиты — [docs/DEMO.md](docs/DEMO.md).
+
+## Как это выглядит
+
+| | |
+|---|---|
+| <img src="docs/img/1_dashboard.png" width="420"><br>Дашборд и качество данных | <img src="docs/img/2_models.png" width="420"><br>Сравнение моделей и SHAP |
+| <img src="docs/img/3_prediction.png" width="420"><br>Прогноз, SHAP-факторы и оценка мер | <img src="docs/img/4_agent.png" width="420"><br>Отчёт AI-агента и созданные действия |
+| <img src="docs/img/5_approvals.png" width="420"><br>Очередь согласования (Human-in-the-loop) | <img src="docs/img/6_monitoring.png" width="420"><br>Мониторинг и data drift |
 
 ## Архитектура
 
@@ -88,7 +111,7 @@ Train: 2004–2007 (624 игры) · Test: 2008 (282 игры) · выбор п�
 `evaluate_preventive_measures`, `submit_action_plan`.
 
 **Как устроен LLM-агент (llama-cpp-python):**
-- Модель: `Qwen2.5-3B-Instruct-Q4_K_M.gguf` (~2 ГБ), работает на CPU; один запуск агента ≈ 45–80 с.
+- Модель по умолчанию: `Qwen2.5-3B-Instruct-Q4_K_M.gguf` (~2 ГБ); на GPU (RTX 3060, Docker) один запуск агента ≈ 13 с, на CPU ≈ 45–80 с. Можно переключить на 7B — `LLM_MODEL_FILE` в `.env` (см. «Оценка агента»).
 - Встроенный в llama-cpp-python обработчик `chatml-function-calling` не передаёт модели результаты инструментов, поэтому
   tool calling реализован вручную в родном формате Qwen2.5: схемы в `<tools>`, вызовы `<tool_call>{...}</tool_call>`
   (можно несколько за один ход), ответы `<tool_response>`. Один код работает и с моделью в процессе (`llama_cpp.Llama`),
@@ -186,7 +209,28 @@ docker compose restart n8n
 Без видеокарты — в `docker-compose.yml` заменить `dockerfile: Dockerfile.llm` на `Dockerfile.llm-cpu` и убрать блок `deploy`.
 Локальный запуск (без Docker для приложения) может пользоваться GPU-сервером: `LLM_BASE_URL=http://localhost:8081` в `.env`.
 
+### Оценка агента (3B vs 7B)
+`python -m nrg.eval_agent --tag 3b` прогоняет агента на 30 тестовых играх 2008 года (по 10 низкого, среднего и
+высокого риска) в песочнице — копия БД, без n8n — и сравнивает его план с планом модуля решений.
+Результаты: `reports/agent_eval_3b.json`, `reports/agent_eval_7b.json` (RTX 3060).
+
+| Метрика | Qwen2.5-3B | Qwen2.5-7B |
+|---|---|---|
+| Время одного запуска, среднее / p90 | 13 с / 16 с | 43 с / 69 с |
+| Выгода плана LLM от оптимума модуля решений (средний + высокий риск) | 42 % | 58 % |
+| Совпадение набора мер с модулем решений (Jaccard) | 0.58 | 0.65 |
+| LLM предложила траты при низком риске → правило заменило на мониторинг | 10 из 10 | 10 из 10 |
+| Срабатывание guardrail «план не зафиксирован» | 0 % | 0 % |
+
+Выводы: обе модели надёжно проходят цикл инструментов, но выбирают скромнее оптимума и никогда не берут продуктовые
+меры (контент, мультиплеер) — поэтому модуль решений остаётся эталоном, правило низкого риска нужно, а дорогие меры
+решает человек. 7B выбирает лучше, но втрое медленнее; для демонстрации по умолчанию стоит 3B, 7B включается в `.env`:
+`LLM_MODEL_FILE=qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf`, `LLM_NAME=qwen2.5-7b-instruct-q4_k_m`
+(файлы: `hf download Qwen/Qwen2.5-7B-Instruct-GGUF --include "qwen2.5-7b-instruct-q4_k_m*" --local-dir models`).
+
 ## Сценарий демонстрации (защита)
+Подробный сценарий с выбранными играми, репликами и ответами на вопросы — [docs/DEMO.md](docs/DEMO.md).
+
 1. **Дашборд** — данные, доля негативных, «цена» негативного отзыва в продажах, отчёт о качестве данных.
 2. **Модели и XAI** — таблица сравнения, ROC/PR-кривые, глобальная важность SHAP.
 3. **Прогноз** → «Новая игра»: Wii, Racing, сиквел, 4 часа сюжета, 1 игрок → вероятность, риск, SHAP-факторы, таблица мер.

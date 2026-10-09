@@ -4,9 +4,32 @@
 
 [🇷🇺 Русский](README.md) · 🇷🇴 Română · [🇬🇧 English](README.en.md)
 
+[![tests](https://github.com/Dwarfpt/Machine-Learning-Master/actions/workflows/tests.yml/badge.svg)](https://github.com/Dwarfpt/Machine-Learning-Master/actions/workflows/tests.yml) ![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white) ![XGBoost](https://img.shields.io/badge/model-XGBoost-EB6C2D) ![SHAP](https://img.shields.io/badge/XAI-SHAP-8A2BE2) ![LLM](https://img.shields.io/badge/agent-Qwen2.5%20%C2%B7%20llama--cpp-4B5563) ![n8n](https://img.shields.io/badge/RPA-n8n-EA4B71?logo=n8n&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-Compose%20%2B%20GPU-2496ED?logo=docker&logoColor=white)
+
 Sistem ML end-to-end: **Date → ML → Predicție → Explicație (SHAP) → Agent AI → Acțiune (n8n, Human-in-the-loop)**.
 Un editor de jocuri video estimează **înainte de lansare** probabilitatea ca jocul să primească o recenzie negativă de la critici,
 înțelege *de ce*, iar agentul alege măsurile de prevenire rentabile și le lansează (cele costisitoare — după aprobarea managerului).
+
+
+## Pornire rapidă
+Întregul sistem (API, aplicație web, LLM pe GPU, n8n, e-mail):
+```bash
+git clone https://github.com/Dwarfpt/Machine-Learning-Master.git
+cd Machine-Learning-Master
+cp .env.example .env
+pip install huggingface_hub && hf download Qwen/Qwen2.5-3B-Instruct-GGUF qwen2.5-3b-instruct-q4_k_m.gguf --local-dir models
+docker compose up -d --build
+docker compose exec n8n sh /workflows/setup_n8n.sh && docker compose restart n8n
+```
+Apoi deschideți http://localhost:8501. Detalii — secțiunea Pornire; scenariul demonstrației — [docs/DEMO.md](docs/DEMO.md) (RU).
+
+## Capturi de ecran
+
+| | |
+|---|---|
+| <img src="docs/img/1_dashboard.png" width="420"><br>Dashboard și calitatea datelor | <img src="docs/img/2_models.png" width="420"><br>Compararea modelelor și SHAP |
+| <img src="docs/img/3_prediction.png" width="420"><br>Prognoză, factori SHAP și măsuri | <img src="docs/img/4_agent.png" width="420"><br>Raportul agentului AI și acțiunile create |
+| <img src="docs/img/5_approvals.png" width="420"><br>Coada de aprobare (Human-in-the-loop) | <img src="docs/img/6_monitoring.png" width="420"><br>Monitorizare și data drift |
 
 ## Arhitectura
 

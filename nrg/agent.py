@@ -22,7 +22,16 @@ from .i18n import factor_sentence, feature_label, measure_name, t
 from .predict import get_predictor
 
 LANG_NAMES = {"ru": "Russian", "ro": "Romanian", "en": "English"}
-_CJK = re.compile(r"[぀-ヿ㐀-鿿豈-﫿]")
+# CJK ideographs, kana, CJK punctuation ("。", "，") and full-width forms: small Qwen models code-switch into Chinese
+_CJK = re.compile(r"[\u3000-\u303f\u3040-\u30ff\u3400-\u9fff\uf900-\ufaff\uff00-\uffef]")
+_CJK_PUNCT = str.maketrans({"\u3002": ".", "\uff0c": ",", "\u3001": ",", "\uff1a": ":", "\uff1b": ";", "\uff01": "!",
+                            "\uff1f": "?", "\uff08": "(", "\uff09": ")"})
+
+
+def _strip_cjk(text: str) -> str:
+    text = _CJK.sub("", text.translate(_CJK_PUNCT))
+    text = re.sub(r"[ \t]{2,}", " ", text)
+    return re.sub(r"\s+([.,;:!?)])", r"\1", text).strip()
 
 
 # ------------------------------------------------------------------ tools
@@ -87,6 +96,7 @@ def submit_action_plan(prediction_id: int, action_codes: list[str], rationale: s
     p = db.get_prediction(int(prediction_id))
     if not p:
         return {"error": f"prediction {prediction_id} not found"}
+    rationale = _strip_cjk(str(rationale or ""))  # stored in the DB, shown to the manager and e-mailed
     if isinstance(action_codes, str):
         action_codes = [c.strip() for c in action_codes.replace(";", ",").split(",")]
     valid = [c for c in dict.fromkeys(action_codes) if c in actions.BY_CODE or c == actions.MONITOR_ONLY]
@@ -221,7 +231,7 @@ def _run_llm(prediction_id: int, lang: str, max_steps: int = 8) -> tuple[str, li
     if lang != "en" and _CJK.search(final):  # small Qwen models sometimes code-switch into Chinese
         messages.append({"role": "user", "content": f"Rewrite your report strictly in {LANG_NAMES[lang]}, "
                                                     "without any Chinese characters. Keep the same content."})
-        final = _CJK.sub("", llm.chat(messages).strip())
+        final = _strip_cjk(llm.chat(messages))
     if not state["submitted"]:  # guardrail: a decision must always be recorded
         ev = evaluate_preventive_measures(prediction_id)
         res = submit_action_plan(prediction_id, ev["recommended_plan"],

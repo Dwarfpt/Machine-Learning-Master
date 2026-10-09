@@ -24,7 +24,7 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "PUT_YOUR_SPREADSHEET_ID_HERE",
+          "value": "130Y3gp-JGCRp-rYKsrGTkT9pqRuFg-eIkeooN8ZEDnU",
           "mode": "id"
         },
         "sheetName": {
@@ -166,9 +166,7 @@
           "id": "nrgGoogleSa00001",
           "name": "Google Service Account"
         }
-      },
-      "disabled": true,
-      "notes": "Run n8n/setup_google.py to enable (see README: Google Sheets)"
+      }
     },
     {
       "parameters": {
@@ -244,6 +242,39 @@
     },
     {
       "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "833ce754-f176-53d1-93f5-4d0ea21620f4",
+              "leftValue": "={{ $('Webhook: action created').item.json.body.action.action_code !== 'MONITOR_ONLY' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "9646a1d7-3c49-540b-8159-8948835b1129",
+      "name": "Real measure?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1160,
+        320
+      ]
+    },
+    {
+      "parameters": {
         "fromEmail": "={{ $env.NRG_MAIL_FROM || 'nrg-bot@example.com' }}",
         "toEmail": "={{ $env.NRG_TEAM_EMAIL || 'dev-team@example.com' }}",
         "subject": "=[NRG] New task: {{ $('Webhook: action created').item.json.body.action.action_code }} — {{ $('Webhook: action created').item.json.body.action.title }}",
@@ -256,7 +287,7 @@
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2.1,
       "position": [
-        1160,
+        1400,
         320
       ],
       "credentials": {
@@ -288,7 +319,7 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "PUT_YOUR_SPREADSHEET_ID_HERE",
+          "value": "130Y3gp-JGCRp-rYKsrGTkT9pqRuFg-eIkeooN8ZEDnU",
           "mode": "id"
         },
         "sheetName": {
@@ -430,9 +461,7 @@
           "id": "nrgGoogleSa00001",
           "name": "Google Service Account"
         }
-      },
-      "disabled": true,
-      "notes": "Run n8n/setup_google.py to enable (see README: Google Sheets)"
+      }
     },
     {
       "parameters": {
@@ -573,6 +602,17 @@
       ]
     },
     "Mark executed (auto)": {
+      "main": [
+        [
+          {
+            "node": "Real measure?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Real measure?": {
       "main": [
         [
           {

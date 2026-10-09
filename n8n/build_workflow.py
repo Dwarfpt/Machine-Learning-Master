@@ -3,7 +3,8 @@
 Flow 1  (POST /webhook/nrg-action, sent by the AI agent for every created action)
     Webhook -> Log to Google Sheets -> Needs approval?
         yes -> E-mail manager with Approve / Reject links          (Human-in-the-loop)
-        no  -> Mark executed in API -> E-mail team "task created"
+        no  -> Mark executed in API -> Real measure? (not MONITOR_ONLY) -> E-mail team "task created"
+               (monitoring-only decisions are just logged to the sheet - no e-mail noise)
 Flow 2  (POST /webhook/nrg-decision, sent by the API after the manager clicked a link / button)
     Webhook -> Log decision to Google Sheets -> Approved?
         yes -> Mark executed in API -> E-mail team "approved task"
@@ -117,9 +118,10 @@ nodes = [
           + "<p><a href=\"{{ %s.approve_url }}\">✅ Approve</a> &nbsp; | &nbsp; "
             "<a href=\"{{ %s.reject_url }}\">❌ Reject</a></p>" % (A, A), [920, 80]),
     execute("Mark executed (auto)", A, [920, 320]),
+    if_true("Real measure?", "={{ %s.action.action_code !== 'MONITOR_ONLY' }}" % A, [1160, 320]),
     email("E-mail team (task created)", TEAM,
           "=[NRG] New task: {{ %s.action.action_code }} — {{ %s.action.title }}" % (A, A),
-          "=<h3>New preventive task (auto-approved)</h3>" + ROW % ((A,) * 5), [1160, 320]),
+          "=<h3>New preventive task (auto-approved)</h3>" + ROW % ((A,) * 5), [1400, 320]),
 
     webhook("Webhook: decision", "nrg-decision", [200, 600]),
     sheets_log("Log decision to Google Sheets", D, "action_decided", [440, 600]),
@@ -151,7 +153,8 @@ connections = link(
     ("Log to Google Sheets", "Needs approval?", 0),
     ("Needs approval?", "E-mail manager (approve/reject)", 0),
     ("Needs approval?", "Mark executed (auto)", 1),
-    ("Mark executed (auto)", "E-mail team (task created)", 0),
+    ("Mark executed (auto)", "Real measure?", 0),
+    ("Real measure?", "E-mail team (task created)", 0),
     ("Webhook: decision", "Log decision to Google Sheets", 0),
     ("Log decision to Google Sheets", "Approved?", 0),
     ("Approved?", "Mark executed (approved)", 0),

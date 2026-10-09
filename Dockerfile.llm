@@ -11,5 +11,6 @@ RUN pip install --no-cache-dir --break-system-packages "llama-cpp-python[server]
        /usr/local/lib/python3.12/dist-packages/llama_cpp/server/app.py \
     && grep -q "await exit_stack.enter_async_context" /usr/local/lib/python3.12/dist-packages/llama_cpp/server/app.py
 EXPOSE 8080
-CMD ["python3", "-m", "llama_cpp.server", "--model", "/models/qwen2.5-3b-instruct-q4_k_m.gguf", \
-     "--chat_format", "chatml", "--n_ctx", "8192", "--n_gpu_layers", "-1", "--host", "0.0.0.0", "--port", "8080"]
+# model file from ./models, chosen in .env: LLM_MODEL_FILE (3B by default; 7B = qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf)
+ENV LLM_MODEL_FILE=qwen2.5-3b-instruct-q4_k_m.gguf
+CMD python3 -m llama_cpp.server --model "/models/${LLM_MODEL_FILE}" --chat_format chatml --n_ctx 8192     --n_gpu_layers -1 --host 0.0.0.0 --port 8080

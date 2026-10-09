@@ -5,3 +5,6 @@ mlartifacts
 *.ipynb_checkpoints
 models
 *.gguf
+.env
+n8n/google_service_account.json
+n8n/credentials_google.json

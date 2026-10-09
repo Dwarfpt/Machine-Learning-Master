@@ -14,7 +14,7 @@ RAW_CSV = Path(os.getenv("NRG_RAW_CSV", DATA_DIR / "raw" / "Video_Games_Data.csv
 DB_PATH = Path(os.getenv("NRG_DB_PATH", DATA_DIR / "games.db"))
 ARTIFACTS_DIR = ROOT / "artifacts"
 REPORTS_DIR = ROOT / "reports"
-OUTBOX_PATH = DATA_DIR / "outbox.jsonl"  # local fallback when n8n is not configured
+OUTBOX_PATH = Path(os.getenv("NRG_OUTBOX_PATH", DATA_DIR / "outbox.jsonl"))  # fallback when n8n is not configured
 
 # Target: a game "gets a negative review" if its critic score is below this threshold.
 NEGATIVE_THRESHOLD = int(os.getenv("NRG_NEGATIVE_THRESHOLD", 60))
@@ -23,7 +23,7 @@ TEST_YEAR = 2008  # time-based split: train on 2004-2007, test on 2008 releases
 
 # Business assumptions (used by the decision module and the agent)
 AVG_UNIT_PRICE_USD = float(os.getenv("NRG_AVG_UNIT_PRICE_USD", 40))
-APPROVAL_COST_THRESHOLD_K = float(os.getenv("NRG_APPROVAL_COST_THRESHOLD_K", 100))  # k$; above -> human approval
+APPROVAL_COST_THRESHOLD_K = float(os.getenv("NRG_APPROVAL_COST_THRESHOLD_K", 50))  # k$; above -> human approval (QA 60k and up)
 
 # AI agent: local LLM via llama-cpp-python (GGUF). Two modes:
 #  * in-process: LLM_BASE_URL empty -> the model file is loaded with llama_cpp.Llama

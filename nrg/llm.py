@@ -27,7 +27,9 @@ _llama = None
 def available() -> bool:
     if config.LLM_BASE_URL:
         try:
-            return requests.get(f"{config.LLM_BASE_URL}/v1/models", timeout=3).ok
+            return requests.get(f"{config.LLM_BASE_URL}/v1/models", timeout=(3, 5)).ok
+        except requests.ReadTimeout:  # connected, but /v1/models waits for the lock held by a running generation
+            return True
         except requests.RequestException:
             return False
     if not config.LLM_MODEL_PATH.exists():

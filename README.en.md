@@ -4,9 +4,32 @@
 
 [🇷🇺 Русский](README.md) · [🇷🇴 Română](README.ro.md) · 🇬🇧 English
 
+[![tests](https://github.com/Dwarfpt/Machine-Learning-Master/actions/workflows/tests.yml/badge.svg)](https://github.com/Dwarfpt/Machine-Learning-Master/actions/workflows/tests.yml) ![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white) ![XGBoost](https://img.shields.io/badge/model-XGBoost-EB6C2D) ![SHAP](https://img.shields.io/badge/XAI-SHAP-8A2BE2) ![LLM](https://img.shields.io/badge/agent-Qwen2.5%20%C2%B7%20llama--cpp-4B5563) ![n8n](https://img.shields.io/badge/RPA-n8n-EA4B71?logo=n8n&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-Compose%20%2B%20GPU-2496ED?logo=docker&logoColor=white)
+
 An end-to-end ML system: **Data → ML → Prediction → Explanation (SHAP) → AI agent → Action (n8n, Human-in-the-loop)**.
 Before release, a video game publisher estimates the probability that a game will get a negative critic review and sees
 *why*. The agent then picks preventive measures that pay off and starts them; expensive ones wait for manager approval.
+
+
+## Quick start
+The whole stack (API, web app, GPU LLM, n8n, mail):
+```bash
+git clone https://github.com/Dwarfpt/Machine-Learning-Master.git
+cd Machine-Learning-Master
+cp .env.example .env
+pip install huggingface_hub && hf download Qwen/Qwen2.5-3B-Instruct-GGUF qwen2.5-3b-instruct-q4_k_m.gguf --local-dir models
+docker compose up -d --build
+docker compose exec n8n sh /workflows/setup_n8n.sh && docker compose restart n8n
+```
+Then open http://localhost:8501. Details: the Run section; defence walkthrough: [docs/DEMO.md](docs/DEMO.md) (RU).
+
+## Screenshots
+
+| | |
+|---|---|
+| <img src="docs/img/1_dashboard.png" width="420"><br>Dashboard and data quality | <img src="docs/img/2_models.png" width="420"><br>Model comparison and SHAP |
+| <img src="docs/img/3_prediction.png" width="420"><br>Prediction, SHAP factors and measures | <img src="docs/img/4_agent.png" width="420"><br>AI agent report and created actions |
+| <img src="docs/img/5_approvals.png" width="420"><br>Approval queue (Human-in-the-loop) | <img src="docs/img/6_monitoring.png" width="420"><br>Monitoring and data drift |
 
 ## Architecture
 

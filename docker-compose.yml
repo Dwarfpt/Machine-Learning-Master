@@ -6,11 +6,12 @@
 #   n8n: http://localhost:5678 · test mailbox (Mailpit): http://localhost:8025
 x-nrg-env: &nrg-env
   LLM_BASE_URL: http://llm:8080
-  LLM_NAME: qwen2.5-3b-instruct-q4_k_m
+  LLM_NAME: ${LLM_NAME:-qwen2.5-3b-instruct-q4_k_m}
   N8N_WEBHOOK_URL: http://n8n:5678/webhook/nrg-action
   N8N_DECISION_WEBHOOK_URL: http://n8n:5678/webhook/nrg-decision
   NRG_API_PUBLIC_URL: http://localhost:8000
   NRG_APPROVAL_SECRET: ${NRG_APPROVAL_SECRET:-change-me}
+  NRG_APPROVAL_COST_THRESHOLD_K: ${NRG_APPROVAL_COST_THRESHOLD_K:-50}
   MLFLOW_TRACKING_URI: sqlite:////app/mlflow.db
 
 services:
@@ -49,6 +50,8 @@ services:
   llm:  # llama-cpp-python server (OpenAI-compatible) on the NVIDIA GPU; no GPU -> dockerfile: Dockerfile.llm-cpu
     build: {context: ., dockerfile: Dockerfile.llm}
     ports: ["8081:8080"]  # host 8081 (8080 is often reserved on Windows); local runs: LLM_BASE_URL=http://localhost:8081
+    environment:
+      LLM_MODEL_FILE: ${LLM_MODEL_FILE:-qwen2.5-3b-instruct-q4_k_m.gguf}
     volumes: ["./models:/models:ro"]
     deploy:
       resources:

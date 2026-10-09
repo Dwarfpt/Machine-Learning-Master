@@ -1,0 +1,22 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Build the SQLite DB from the CSV
+        run: python -c "from nrg import db; print(db.init_db(), 'games loaded')"
+      - name: Run tests (no LLM, no n8n - rule-based agent and outbox are used)
+        run: pytest -q

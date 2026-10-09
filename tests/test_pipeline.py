@@ -95,3 +95,10 @@ def test_low_risk_policy_forces_monitoring(predictor):
         pytest.skip("example is not low-risk for the current model")
     res = submit_action_plan(r["prediction_id"], ["EXTENDED_QA"], "test")
     assert [a["code"] for a in res["created_actions"]] == ["MONITOR_ONLY"] and "policy_override" in res
+
+
+def test_cjk_is_stripped_from_llm_text():
+    from nrg.agent import _strip_cjk
+    assert _strip_cjk("Риски, связанные с 负面评价。 Менеджеру") == "Риски, связанные с. Менеджеру"
+    assert _strip_cjk("Plan: QA，PR") == "Plan: QA,PR"
+    assert _strip_cjk("Обычный текст, без изменений!") == "Обычный текст, без изменений!"

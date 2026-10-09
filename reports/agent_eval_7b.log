@@ -1,0 +1,55 @@
+[ 1/30] low    p=0.07 Grand Theft Auto IV           22.6s llm=['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+[ 2/30] low    p=0.04 Guitar Hero: World Tour       23.6s llm=['EXTENDED_QA', 'MONITOR_ONLY'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+[ 3/30] low    p=0.12 NBA 2K9                       40.3s llm=['EXTENDED_QA', 'MONITOR_ONLY', 'PLAYTEST_FOCUS_GROUP'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+[ 4/30] low    p=0.05 MLB 08: The Show              30.5s llm=['EXTENDED_QA', 'MONITOR_ONLY', 'PLAYTEST_FOCUS_GROUP'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+[ 5/30] low    p=0.12 NHL 09                        40.2s llm=['EXTENDED_QA', 'MONITOR_ONLY'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+[ 6/30] low    p=0.06 The Sims 2: Apartment Pets    35.8s llm=['EXTENDED_QA', 'MONITOR_ONLY', 'PLAYTEST_FOCUS_GROUP'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+[ 7/30] low    p=0.05 Apollo Justice: Ace Attorney  45.9s llm=['EXTENDED_QA', 'MONITOR_ONLY', 'PLAYTEST_FOCUS_GROUP'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+[ 8/30] low    p=0.09 Beijing 2008                  39.1s llm=['EXTENDED_QA', 'MONITOR_ONLY', 'PLAYTEST_FOCUS_GROUP'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+[ 9/30] low    p=0.13 NBA Ballers: Chosen One       20.9s llm=['EXTENDED_QA', 'MONITOR_ONLY', 'PLAYTEST_FOCUS_GROUP'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+[10/30] low    p=0.11 Blitz: The League II          31.5s llm=['EXTENDED_QA', 'MONITOR_ONLY', 'PLAYTEST_FOCUS_GROUP'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+[11/30] medium p=0.14 Mario Kart Wii                57.8s llm=['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] -> ['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+[12/30] medium p=0.21 Army of Two                   32.4s llm=['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] -> ['EXTENDED_QA'] | oracle=['EXTENDED_QA', 'EXTEND_CONTENT', 'PLAYTEST_FOCUS_GROUP']
+[13/30] medium p=0.17 BioShock                      55.6s llm=['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] -> ['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] | oracle=['EXTENDED_QA', 'EXTEND_CONTENT', 'PLAYTEST_FOCUS_GROUP']
+[14/30] medium p=0.18 Pure                          29.6s llm=['EXTENDED_QA', 'MONITOR_ONLY', 'PLAYTEST_FOCUS_GROUP'] -> ['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] | oracle=['ADD_MULTIPLAYER', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+[15/30] medium p=0.16 Spectrobes: Beyond the Porta  30.1s llm=['EXTENDED_QA', 'MONITOR_ONLY', 'PLAYTEST_FOCUS_GROUP'] -> ['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] | oracle=['CRITIC_PREVIEW_PR', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+[16/30] medium p=0.20 Silent Hill: Homecoming       43.8s llm=['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] -> ['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] | oracle=['ADD_MULTIPLAYER', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+[17/30] medium p=0.20 Silent Hill: Homecoming       39.6s llm=['ADD_MULTIPLAYER', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] -> ['EXTENDED_QA'] | oracle=['ADD_MULTIPLAYER', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+[18/30] medium p=0.14 Dokapon Kingdom               68.5s llm=['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] -> ['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+[19/30] medium p=0.20 The King of Fighters Collect  91.6s llm=['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] -> ['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] | oracle=['ADD_MULTIPLAYER', 'DELAY_RELEASE_POLISH', 'EXTENDED_QA']
+[20/30] medium p=0.20 Harvey Birdman: Attorney at   15.8s llm=['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] -> ['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+[21/30] high   p=0.28 Kung Fu Panda                 29.5s llm=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'EXTEND_CONTENT'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'EXTEND_CONTENT']
+[22/30] high   p=0.30 Star Wars: The Clone Wars -   20.6s llm=['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] -> ['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] | oracle=['CRITIC_PREVIEW_PR', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+[23/30] high   p=0.52 Iron Man                      43.5s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+[24/30] high   p=0.52 Iron Man                      28.6s llm=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'EXTEND_CONTENT'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'EXTEND_CONTENT']
+[25/30] high   p=0.23 Castlevania: Order of Eccles  41.7s llm=['EXTENDED_QA', 'MONITOR_ONLY', 'PLAYTEST_FOCUS_GROUP'] -> ['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] | oracle=['EXTENDED_QA', 'EXTEND_CONTENT', 'PLAYTEST_FOCUS_GROUP']
+[26/30] high   p=0.43 Lost: Via Domus               50.4s llm=['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] -> ['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'EXTEND_CONTENT']
+[27/30] high   p=0.32 Dark Messiah of Might and Ma  51.0s llm=['EXTENDED_QA', 'MONITOR_ONLY', 'PLAYTEST_FOCUS_GROUP'] -> ['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] | oracle=['ADD_MULTIPLAYER', 'DELAY_RELEASE_POLISH', 'EXTENDED_QA']
+[28/30] high   p=0.37 Ninja Reflex                  59.6s llm=['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] -> ['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'EXTEND_CONTENT']
+[29/30] high   p=0.28 Code Lyoko: Fall of X.A.N.A   71.1s llm=['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] -> ['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] | oracle=['EXTENDED_QA', 'EXTEND_CONTENT', 'PLAYTEST_FOCUS_GROUP']
+[30/30] high   p=0.32 Agatha Christie: Evil Under   87.0s llm=['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] -> ['EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] | oracle=['ADD_MULTIPLAYER', 'DELAY_RELEASE_POLISH', 'EXTENDED_QA']
+{
+  "tag": "7b",
+  "model": "qwen2.5-7b-instruct-q4_k_m",
+  "n_games": 30,
+  "per_level": {
+    "low": 10,
+    "medium": 10,
+    "high": 10
+  },
+  "llm_success": 1.0,
+  "guardrail_rate": 0.0,
+  "policy_override_rate": 0.3333333333333333,
+  "exact_match": 0.3333333333333333,
+  "exact_match_by_level": {
+    "low": 1,
+    "medium": 0,
+    "high": 0
+  },
+  "mean_jaccard": 0.6527777777777778,
+  "net_value_ratio_med_high": 0.5767787701380284,
+  "cjk_rate": 0.0,
+  "latency_s_mean": 42.60666666666667,
+  "latency_s_p90": 68.5
+}
+-> D:\Univer-Masterat\Machine-Learning\negative-review-guard\reports\agent_eval_7b.json
