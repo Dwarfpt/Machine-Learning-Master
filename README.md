@@ -203,6 +203,17 @@ docker compose restart n8n
 5. `docker compose exec n8n sh /workflows/setup_n8n.sh`, затем `docker compose restart n8n`.
 Каждое созданное действие и каждое решение менеджера появятся новой строкой (событие, мера, стоимость, статус, кто решил). Ошибка Sheets не ломает основной процесс (узел `onError: continue`).
 
+### Удалённый доступ (WireGuard / локальная сеть)
+Все сервисы слушают на всех интерфейсах компьютера, поэтому с другого устройства в той же VPN или сети они открываются
+по IP компьютера: приложение `http://<IP>:8501`, API `http://<IP>:8000/docs`, n8n `:5678`, Mailpit `:8025`,
+MLflow `:5000` (`docker compose --profile mlflow up -d mlflow`).
+1. В `.env` указать `NRG_API_PUBLIC_URL=http://<IP>:8000`, чтобы ссылки Approve/Reject в письмах открывались
+   с другого устройства, затем `docker compose up -d api app`.
+2. Если порты не открываются — разрешить их в брандмауэре Windows только на интерфейсе VPN (PowerShell от администратора):
+   `New-NetFirewallRule -DisplayName "NRG via VPN" -Direction Inbound -Action Allow -Protocol TCP -LocalPort 8000,8501,5678,8025,5000 -InterfaceAlias <имя адаптера>`.
+3. Редактор n8n по обычному http пускает только с localhost (защищённая cookie); для входа с другого устройства нужен
+   HTTPS или осознанно выставленный `N8N_SECURE_COOKIE=false`. Вебхуки и письма работают без этого.
+
 ### GPU (NVIDIA) для LLM-агента
 Контейнер `llm` (Dockerfile.llm) использует CUDA и выгружает все слои модели на видеокарту (`--n_gpu_layers -1`):
 нужна Docker Desktop с WSL2 и драйвер NVIDIA (проверка: `docker run --rm --gpus all nvidia/cuda:12.4.1-base-ubuntu22.04 nvidia-smi`).
