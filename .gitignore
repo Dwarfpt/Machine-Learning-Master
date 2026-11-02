@@ -11,3 +11,9 @@ models/*.gguf
 n8n/google_service_account.json
 n8n/credentials_google.json
 SHPARGALKA.txt
+.venv-automl/
+data/processed/
+data/incoming/
+reports/*_log.txt
+data/raw/kaggle/
+logs.log

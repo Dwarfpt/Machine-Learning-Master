@@ -8,27 +8,27 @@
       "medium": 10,
       "high": 10
     },
-    "llm_success": 0.9666666666666667,
+    "llm_success": 1.0,
     "guardrail_rate": 0.0,
     "policy_override_rate": 0.3333333333333333,
-    "exact_match": 0.36666666666666664,
+    "exact_match": 0.3333333333333333,
     "exact_match_by_level": {
       "low": 1,
-      "medium": 0.1,
+      "medium": 0,
       "high": 0
     },
-    "mean_jaccard": 0.5777777777777777,
-    "net_value_ratio_med_high": 0.42485363873338744,
+    "mean_jaccard": 0.5333333333333333,
+    "net_value_ratio_med_high": 0.396781275617409,
     "cjk_rate": 0.0,
-    "latency_s_mean": 13.376666666666667,
-    "latency_s_p90": 16.0
+    "latency_s_mean": 15.213333333333333,
+    "latency_s_p90": 16.6
   },
   "runs": [
     {
-      "game_id": 835,
-      "title": "Grand Theft Auto IV",
+      "game_id": 14352,
+      "title": "Assassin's Creed IV: Black Flag",
       "risk_level": "low",
-      "p": 0.075,
+      "p": 0.021,
       "mode": "llm",
       "llm_error": null,
       "guardrail": false,
@@ -52,16 +52,17 @@
         "find_similar_games",
         "get_publisher_track_record",
         "evaluate_preventive_measures",
+        "search_knowledge_base",
         "submit_action_plan"
       ],
       "cjk": false,
-      "latency_s": 10.8
+      "latency_s": 30.3
     },
     {
-      "game_id": 854,
-      "title": "Guitar Hero: World Tour",
+      "game_id": 14548,
+      "title": "Just Dance 2014",
       "risk_level": "low",
-      "p": 0.042,
+      "p": 0.021,
       "mode": "llm",
       "llm_error": null,
       "guardrail": false,
@@ -85,16 +86,17 @@
         "find_similar_games",
         "get_publisher_track_record",
         "evaluate_preventive_measures",
+        "search_knowledge_base",
         "submit_action_plan"
       ],
       "cjk": false,
-      "latency_s": 13.9
+      "latency_s": 13.4
     },
     {
-      "game_id": 878,
-      "title": "NBA 2K9 ",
+      "game_id": 14729,
+      "title": "SimCity (2013)",
       "risk_level": "low",
-      "p": 0.119,
+      "p": 0.025,
       "mode": "llm",
       "llm_error": null,
       "guardrail": false,
@@ -118,16 +120,17 @@
         "find_similar_games",
         "get_publisher_track_record",
         "evaluate_preventive_measures",
+        "search_knowledge_base",
         "submit_action_plan"
       ],
       "cjk": false,
-      "latency_s": 13.8
+      "latency_s": 15.5
     },
     {
-      "game_id": 905,
-      "title": "MLB 08: The Show",
+      "game_id": 15015,
+      "title": "Far Cry 4",
       "risk_level": "low",
-      "p": 0.047,
+      "p": 0.033,
       "mode": "llm",
       "llm_error": null,
       "guardrail": false,
@@ -151,16 +154,17 @@
         "find_similar_games",
         "get_publisher_track_record",
         "evaluate_preventive_measures",
+        "search_knowledge_base",
         "submit_action_plan"
       ],
       "cjk": false,
-      "latency_s": 12.7
+      "latency_s": 14.5
     },
     {
-      "game_id": 938,
-      "title": "NHL 09 ",
+      "game_id": 15239,
+      "title": "Project Spark",
       "risk_level": "low",
-      "p": 0.119,
+      "p": 0.069,
       "mode": "llm",
       "llm_error": null,
       "guardrail": false,
@@ -184,16 +188,17 @@
         "find_similar_games",
         "get_publisher_track_record",
         "evaluate_preventive_measures",
+        "search_knowledge_base",
         "submit_action_plan"
       ],
       "cjk": false,
-      "latency_s": 11.4
+      "latency_s": 12.6
     },
     {
-      "game_id": 975,
-      "title": "The Sims 2: Apartment Pets",
+      "game_id": 15475,
+      "title": "Assassin's Creed: Rogue",
       "risk_level": "low",
-      "p": 0.058,
+      "p": 0.029,
       "mode": "llm",
       "llm_error": null,
       "guardrail": false,
@@ -217,16 +222,17 @@
         "find_similar_games",
         "get_publisher_track_record",
         "evaluate_preventive_measures",
+        "search_knowledge_base",
         "submit_action_plan"
       ],
       "cjk": false,
-      "latency_s": 11.7
+      "latency_s": 12.0
     },
     {
-      "game_id": 1011,
-      "title": "Apollo Justice: Ace Attorney",
+      "game_id": 15704,
+      "title": "LEGO Dimensions",
       "risk_level": "low",
-      "p": 0.054,
+      "p": 0.014,
       "mode": "llm",
       "llm_error": null,
       "guardrail": false,
@@ -250,14 +256,49 @@
         "find_similar_games",
         "get_publisher_track_record",
         "evaluate_preventive_measures",
+        "search_knowledge_base",
         "submit_action_plan"
       ],
       "cjk": false,
-      "latency_s": 14.6
+      "latency_s": 13.2
     },
     {
-      "game_id": 1060,
-      "title": "Beijing 2008",
+      "game_id": 15968,
+      "title": "The Order: 1886",
+      "risk_level": "low",
+      "p": 0.036,
+      "mode": "llm",
+      "llm_error": null,
+      "guardrail": false,
+      "policy_override": true,
+      "proposed": [
+        "EXTENDED_QA"
+      ],
+      "recorded": [
+        "MONITOR_ONLY"
+      ],
+      "oracle": [
+        "MONITOR_ONLY"
+      ],
+      "exact_match": true,
+      "jaccard": 1.0,
+      "net_recorded_k": 0.0,
+      "net_oracle_k": 0.0,
+      "tools_called": [
+        "get_prediction",
+        "explain_prediction",
+        "find_similar_games",
+        "get_publisher_track_record",
+        "evaluate_preventive_measures",
+        "search_knowledge_base",
+        "submit_action_plan"
+      ],
+      "cjk": false,
+      "latency_s": 14.4
+    },
+    {
+      "game_id": 16169,
+      "title": "Dragon Ball: Xenoverse 2",
       "risk_level": "low",
       "p": 0.086,
       "mode": "llm",
@@ -283,611 +324,85 @@
         "find_similar_games",
         "get_publisher_track_record",
         "evaluate_preventive_measures",
-        "submit_action_plan"
-      ],
-      "cjk": false,
-      "latency_s": 12.8
-    },
-    {
-      "game_id": 1098,
-      "title": "NBA Ballers: Chosen One",
-      "risk_level": "low",
-      "p": 0.132,
-      "mode": "llm",
-      "llm_error": null,
-      "guardrail": false,
-      "policy_override": true,
-      "proposed": [
-        "EXTENDED_QA"
-      ],
-      "recorded": [
-        "MONITOR_ONLY"
-      ],
-      "oracle": [
-        "MONITOR_ONLY"
-      ],
-      "exact_match": true,
-      "jaccard": 1.0,
-      "net_recorded_k": 0.0,
-      "net_oracle_k": 0.0,
-      "tools_called": [
-        "get_prediction",
-        "explain_prediction",
-        "find_similar_games",
-        "get_publisher_track_record",
-        "evaluate_preventive_measures",
-        "submit_action_plan"
-      ],
-      "cjk": false,
-      "latency_s": 11.5
-    },
-    {
-      "game_id": 1122,
-      "title": "Blitz: The League II",
-      "risk_level": "low",
-      "p": 0.112,
-      "mode": "llm",
-      "llm_error": null,
-      "guardrail": false,
-      "policy_override": true,
-      "proposed": [
-        "EXTENDED_QA"
-      ],
-      "recorded": [
-        "MONITOR_ONLY"
-      ],
-      "oracle": [
-        "MONITOR_ONLY"
-      ],
-      "exact_match": true,
-      "jaccard": 1.0,
-      "net_recorded_k": 0.0,
-      "net_oracle_k": 0.0,
-      "tools_called": [
-        "get_prediction",
-        "explain_prediction",
-        "find_similar_games",
-        "get_publisher_track_record",
-        "evaluate_preventive_measures",
-        "submit_action_plan"
-      ],
-      "cjk": false,
-      "latency_s": 12.5
-    },
-    {
-      "game_id": 834,
-      "title": "Mario Kart Wii",
-      "risk_level": "medium",
-      "p": 0.145,
-      "mode": "llm",
-      "llm_error": null,
-      "guardrail": false,
-      "policy_override": false,
-      "proposed": [
-        "EXTENDED_QA"
-      ],
-      "recorded": [
-        "EXTENDED_QA"
-      ],
-      "oracle": [
-        "DELAY_RELEASE_POLISH",
-        "EXTENDED_QA",
-        "PLAYTEST_FOCUS_GROUP"
-      ],
-      "exact_match": false,
-      "jaccard": 0.3333333333333333,
-      "net_recorded_k": 170.1,
-      "net_oracle_k": 268.9,
-      "tools_called": [
-        "get_prediction",
-        "explain_prediction",
-        "find_similar_games",
-        "get_publisher_track_record",
-        "evaluate_preventive_measures",
-        "submit_action_plan"
-      ],
-      "cjk": false,
-      "latency_s": 11.1
-    },
-    {
-      "game_id": 873,
-      "title": "Army of Two",
-      "risk_level": "medium",
-      "p": 0.212,
-      "mode": "llm",
-      "llm_error": null,
-      "guardrail": false,
-      "policy_override": false,
-      "proposed": [
-        "EXTENDED_QA"
-      ],
-      "recorded": [
-        "EXTENDED_QA"
-      ],
-      "oracle": [
-        "EXTENDED_QA",
-        "EXTEND_CONTENT",
-        "PLAYTEST_FOCUS_GROUP"
-      ],
-      "exact_match": false,
-      "jaccard": 0.3333333333333333,
-      "net_recorded_k": 194.6,
-      "net_oracle_k": 401.5,
-      "tools_called": [
-        "get_prediction",
-        "explain_prediction",
-        "find_similar_games",
-        "get_publisher_track_record",
-        "evaluate_preventive_measures",
-        "submit_action_plan"
-      ],
-      "cjk": false,
-      "latency_s": 12.2
-    },
-    {
-      "game_id": 923,
-      "title": "BioShock",
-      "risk_level": "medium",
-      "p": 0.167,
-      "mode": "llm",
-      "llm_error": null,
-      "guardrail": false,
-      "policy_override": false,
-      "proposed": [
-        "EXTENDED_QA"
-      ],
-      "recorded": [
-        "EXTENDED_QA"
-      ],
-      "oracle": [
-        "EXTENDED_QA",
-        "EXTEND_CONTENT",
-        "PLAYTEST_FOCUS_GROUP"
-      ],
-      "exact_match": false,
-      "jaccard": 0.3333333333333333,
-      "net_recorded_k": 125.3,
-      "net_oracle_k": 281.1,
-      "tools_called": [
-        "get_prediction",
-        "explain_prediction",
-        "find_similar_games",
-        "get_publisher_track_record",
-        "evaluate_preventive_measures",
-        "submit_action_plan"
-      ],
-      "cjk": false,
-      "latency_s": 16.3
-    },
-    {
-      "game_id": 963,
-      "title": "Pure",
-      "risk_level": "medium",
-      "p": 0.176,
-      "mode": "llm",
-      "llm_error": null,
-      "guardrail": false,
-      "policy_override": false,
-      "proposed": [
-        "EXTENDED_QA"
-      ],
-      "recorded": [
-        "EXTENDED_QA"
-      ],
-      "oracle": [
-        "ADD_MULTIPLAYER",
-        "EXTENDED_QA",
-        "PLAYTEST_FOCUS_GROUP"
-      ],
-      "exact_match": false,
-      "jaccard": 0.3333333333333333,
-      "net_recorded_k": 135.2,
-      "net_oracle_k": 340.3,
-      "tools_called": [
-        "get_prediction",
-        "explain_prediction",
-        "find_similar_games",
-        "get_publisher_track_record",
-        "evaluate_preventive_measures",
-        "submit_action_plan"
-      ],
-      "cjk": false,
-      "latency_s": 13.7
-    },
-    {
-      "game_id": 1000,
-      "title": "Spectrobes: Beyond the Portals",
-      "risk_level": "medium",
-      "p": 0.162,
-      "mode": "llm",
-      "llm_error": null,
-      "guardrail": false,
-      "policy_override": false,
-      "proposed": [
-        "EXTENDED_QA"
-      ],
-      "recorded": [
-        "EXTENDED_QA"
-      ],
-      "oracle": [
-        "CRITIC_PREVIEW_PR",
-        "EXTENDED_QA",
-        "PLAYTEST_FOCUS_GROUP"
-      ],
-      "exact_match": false,
-      "jaccard": 0.3333333333333333,
-      "net_recorded_k": 37.0,
-      "net_oracle_k": 76.7,
-      "tools_called": [
-        "get_prediction",
-        "explain_prediction",
-        "find_similar_games",
-        "get_publisher_track_record",
-        "evaluate_preventive_measures",
-        "submit_action_plan"
-      ],
-      "cjk": false,
-      "latency_s": 13.9
-    },
-    {
-      "game_id": 1029,
-      "title": "Silent Hill: Homecoming",
-      "risk_level": "medium",
-      "p": 0.198,
-      "mode": "rule_based",
-      "llm_error": null,
-      "guardrail": false,
-      "policy_override": false,
-      "proposed": [
-        "ADD_MULTIPLAYER",
-        "EXTENDED_QA",
-        "PLAYTEST_FOCUS_GROUP"
-      ],
-      "recorded": [
-        "ADD_MULTIPLAYER",
-        "EXTENDED_QA",
-        "PLAYTEST_FOCUS_GROUP"
-      ],
-      "oracle": [
-        "ADD_MULTIPLAYER",
-        "EXTENDED_QA",
-        "PLAYTEST_FOCUS_GROUP"
-      ],
-      "exact_match": true,
-      "jaccard": 1.0,
-      "net_recorded_k": 427.0,
-      "net_oracle_k": 427.0,
-      "tools_called": [
-        "get_prediction",
-        "explain_prediction",
-        "find_similar_games",
-        "get_publisher_track_record",
-        "evaluate_preventive_measures",
-        "submit_action_plan"
-      ],
-      "cjk": false,
-      "latency_s": 3.3
-    },
-    {
-      "game_id": 1057,
-      "title": "Silent Hill: Homecoming",
-      "risk_level": "medium",
-      "p": 0.198,
-      "mode": "llm",
-      "llm_error": null,
-      "guardrail": false,
-      "policy_override": false,
-      "proposed": [
-        "EXTENDED_QA"
-      ],
-      "recorded": [
-        "EXTENDED_QA"
-      ],
-      "oracle": [
-        "ADD_MULTIPLAYER",
-        "EXTENDED_QA",
-        "PLAYTEST_FOCUS_GROUP"
-      ],
-      "exact_match": false,
-      "jaccard": 0.3333333333333333,
-      "net_recorded_k": 160.1,
-      "net_oracle_k": 381.5,
-      "tools_called": [
-        "get_prediction",
-        "explain_prediction",
-        "find_similar_games",
-        "get_publisher_track_record",
-        "evaluate_preventive_measures",
-        "submit_action_plan"
-      ],
-      "cjk": false,
-      "latency_s": 24.1
-    },
-    {
-      "game_id": 1088,
-      "title": "Dokapon Kingdom",
-      "risk_level": "medium",
-      "p": 0.137,
-      "mode": "llm",
-      "llm_error": null,
-      "guardrail": false,
-      "policy_override": false,
-      "proposed": [
-        "EXTENDED_QA"
-      ],
-      "recorded": [
-        "EXTENDED_QA"
-      ],
-      "oracle": [
-        "DELAY_RELEASE_POLISH",
-        "EXTENDED_QA",
-        "PLAYTEST_FOCUS_GROUP"
-      ],
-      "exact_match": false,
-      "jaccard": 0.3333333333333333,
-      "net_recorded_k": 158.5,
-      "net_oracle_k": 235.9,
-      "tools_called": [
-        "get_prediction",
-        "explain_prediction",
-        "find_similar_games",
-        "get_publisher_track_record",
-        "evaluate_preventive_measures",
-        "submit_action_plan"
-      ],
-      "cjk": false,
-      "latency_s": 12.3
-    },
-    {
-      "game_id": 1133,
-      "title": "The King of Fighters Collection: The Orochi Saga",
-      "risk_level": "medium",
-      "p": 0.195,
-      "mode": "llm",
-      "llm_error": null,
-      "guardrail": false,
-      "policy_override": false,
-      "proposed": [
-        "EXTENDED_QA"
-      ],
-      "recorded": [
-        "EXTENDED_QA"
-      ],
-      "oracle": [
-        "ADD_MULTIPLAYER",
-        "DELAY_RELEASE_POLISH",
-        "EXTENDED_QA"
-      ],
-      "exact_match": false,
-      "jaccard": 0.3333333333333333,
-      "net_recorded_k": 250.8,
-      "net_oracle_k": 529.9,
-      "tools_called": [
-        "get_prediction",
-        "explain_prediction",
-        "find_similar_games",
-        "get_publisher_track_record",
-        "evaluate_preventive_measures",
-        "submit_action_plan"
-      ],
-      "cjk": false,
-      "latency_s": 13.7
-    },
-    {
-      "game_id": 1166,
-      "title": "Harvey Birdman: Attorney at Law",
-      "risk_level": "medium",
-      "p": 0.199,
-      "mode": "llm",
-      "llm_error": null,
-      "guardrail": false,
-      "policy_override": false,
-      "proposed": [
-        "EXTENDED_QA"
-      ],
-      "recorded": [
-        "EXTENDED_QA"
-      ],
-      "oracle": [
-        "DELAY_RELEASE_POLISH",
-        "EXTENDED_QA",
-        "PLAYTEST_FOCUS_GROUP"
-      ],
-      "exact_match": false,
-      "jaccard": 0.3333333333333333,
-      "net_recorded_k": 256.5,
-      "net_oracle_k": 514.4,
-      "tools_called": [
-        "get_prediction",
-        "explain_prediction",
-        "find_similar_games",
-        "get_publisher_track_record",
-        "evaluate_preventive_measures",
-        "submit_action_plan"
-      ],
-      "cjk": false,
-      "latency_s": 12.0
-    },
-    {
-      "game_id": 851,
-      "title": "Kung Fu Panda",
-      "risk_level": "high",
-      "p": 0.285,
-      "mode": "llm",
-      "llm_error": null,
-      "guardrail": false,
-      "policy_override": false,
-      "proposed": [
-        "EXTENDED_QA"
-      ],
-      "recorded": [
-        "EXTENDED_QA"
-      ],
-      "oracle": [
-        "DELAY_RELEASE_POLISH",
-        "EXTENDED_QA",
-        "EXTEND_CONTENT"
-      ],
-      "exact_match": false,
-      "jaccard": 0.3333333333333333,
-      "net_recorded_k": 282.3,
-      "net_oracle_k": 791.1,
-      "tools_called": [
-        "get_prediction",
-        "explain_prediction",
-        "find_similar_games",
-        "get_publisher_track_record",
-        "evaluate_preventive_measures",
-        "submit_action_plan"
-      ],
-      "cjk": false,
-      "latency_s": 13.7
-    },
-    {
-      "game_id": 913,
-      "title": "Star Wars: The Clone Wars - Jedi Alliance",
-      "risk_level": "high",
-      "p": 0.301,
-      "mode": "llm",
-      "llm_error": null,
-      "guardrail": false,
-      "policy_override": false,
-      "proposed": [
-        "EXTENDED_QA"
-      ],
-      "recorded": [
-        "EXTENDED_QA"
-      ],
-      "oracle": [
-        "CRITIC_PREVIEW_PR",
-        "EXTENDED_QA",
-        "PLAYTEST_FOCUS_GROUP"
-      ],
-      "exact_match": false,
-      "jaccard": 0.3333333333333333,
-      "net_recorded_k": 120.6,
-      "net_oracle_k": 229.0,
-      "tools_called": [
-        "get_prediction",
-        "explain_prediction",
-        "find_similar_games",
-        "get_publisher_track_record",
-        "evaluate_preventive_measures",
-        "submit_action_plan"
-      ],
-      "cjk": false,
-      "latency_s": 11.7
-    },
-    {
-      "game_id": 942,
-      "title": "Iron Man",
-      "risk_level": "high",
-      "p": 0.524,
-      "mode": "llm",
-      "llm_error": null,
-      "guardrail": false,
-      "policy_override": false,
-      "proposed": [
-        "EXTENDED_QA"
-      ],
-      "recorded": [
-        "EXTENDED_QA"
-      ],
-      "oracle": [
-        "DELAY_RELEASE_POLISH",
-        "EXTENDED_QA",
-        "PLAYTEST_FOCUS_GROUP"
-      ],
-      "exact_match": false,
-      "jaccard": 0.3333333333333333,
-      "net_recorded_k": 223.0,
-      "net_oracle_k": 419.2,
-      "tools_called": [
-        "get_prediction",
-        "explain_prediction",
-        "find_similar_games",
-        "get_publisher_track_record",
-        "evaluate_preventive_measures",
-        "submit_action_plan"
-      ],
-      "cjk": false,
-      "latency_s": 15.5
-    },
-    {
-      "game_id": 977,
-      "title": "Iron Man",
-      "risk_level": "high",
-      "p": 0.524,
-      "mode": "llm",
-      "llm_error": null,
-      "guardrail": false,
-      "policy_override": false,
-      "proposed": [
-        "EXTENDED_QA"
-      ],
-      "recorded": [
-        "EXTENDED_QA"
-      ],
-      "oracle": [
-        "DELAY_RELEASE_POLISH",
-        "EXTENDED_QA",
-        "EXTEND_CONTENT"
-      ],
-      "exact_match": false,
-      "jaccard": 0.3333333333333333,
-      "net_recorded_k": 521.4,
-      "net_oracle_k": 1258.2,
-      "tools_called": [
-        "get_prediction",
-        "explain_prediction",
-        "find_similar_games",
-        "get_publisher_track_record",
-        "evaluate_preventive_measures",
-        "submit_action_plan"
-      ],
-      "cjk": false,
-      "latency_s": 14.1
-    },
-    {
-      "game_id": 1012,
-      "title": "Castlevania: Order of Ecclesia",
-      "risk_level": "high",
-      "p": 0.229,
-      "mode": "llm",
-      "llm_error": null,
-      "guardrail": false,
-      "policy_override": false,
-      "proposed": [
-        "EXTENDED_QA"
-      ],
-      "recorded": [
-        "EXTENDED_QA"
-      ],
-      "oracle": [
-        "EXTENDED_QA",
-        "EXTEND_CONTENT",
-        "PLAYTEST_FOCUS_GROUP"
-      ],
-      "exact_match": false,
-      "jaccard": 0.3333333333333333,
-      "net_recorded_k": 77.3,
-      "net_oracle_k": 137.1,
-      "tools_called": [
-        "get_prediction",
-        "explain_prediction",
-        "find_similar_games",
-        "get_publisher_track_record",
-        "evaluate_preventive_measures",
+        "search_knowledge_base",
         "submit_action_plan"
       ],
       "cjk": false,
       "latency_s": 16.7
     },
     {
-      "game_id": 1049,
-      "title": "Lost: Via Domus",
-      "risk_level": "high",
-      "p": 0.435,
+      "game_id": 16349,
+      "title": "Paper Mario: Color Splash",
+      "risk_level": "low",
+      "p": 0.05,
+      "mode": "llm",
+      "llm_error": null,
+      "guardrail": false,
+      "policy_override": true,
+      "proposed": [
+        "EXTENDED_QA"
+      ],
+      "recorded": [
+        "MONITOR_ONLY"
+      ],
+      "oracle": [
+        "MONITOR_ONLY"
+      ],
+      "exact_match": true,
+      "jaccard": 1.0,
+      "net_recorded_k": 0.0,
+      "net_oracle_k": 0.0,
+      "tools_called": [
+        "get_prediction",
+        "explain_prediction",
+        "find_similar_games",
+        "get_publisher_track_record",
+        "evaluate_preventive_measures",
+        "search_knowledge_base",
+        "submit_action_plan"
+      ],
+      "cjk": false,
+      "latency_s": 15.1
+    },
+    {
+      "game_id": 14362,
+      "title": "Batman: Arkham Origins",
+      "risk_level": "medium",
+      "p": 0.103,
+      "mode": "llm",
+      "llm_error": null,
+      "guardrail": false,
+      "policy_override": false,
+      "proposed": [
+        "EXTENDED_QA"
+      ],
+      "recorded": [
+        "EXTENDED_QA"
+      ],
+      "oracle": [
+        "MONITOR_ONLY"
+      ],
+      "exact_match": false,
+      "jaccard": 0.0,
+      "net_recorded_k": -29.2,
+      "net_oracle_k": 0.0,
+      "tools_called": [
+        "get_prediction",
+        "explain_prediction",
+        "find_similar_games",
+        "get_publisher_track_record",
+        "evaluate_preventive_measures",
+        "search_knowledge_base",
+        "submit_action_plan"
+      ],
+      "cjk": false,
+      "latency_s": 15.9
+    },
+    {
+      "game_id": 14454,
+      "title": "Drakengard 3",
+      "risk_level": "medium",
+      "p": 0.112,
       "mode": "llm",
       "llm_error": null,
       "guardrail": false,
@@ -901,63 +416,603 @@
       "oracle": [
         "DELAY_RELEASE_POLISH",
         "EXTENDED_QA",
-        "EXTEND_CONTENT"
+        "PLAYTEST_FOCUS_GROUP"
       ],
       "exact_match": false,
       "jaccard": 0.3333333333333333,
-      "net_recorded_k": 422.5,
-      "net_oracle_k": 1600.8,
+      "net_recorded_k": 242.4,
+      "net_oracle_k": 474.2,
       "tools_called": [
         "get_prediction",
         "explain_prediction",
         "find_similar_games",
         "get_publisher_track_record",
         "evaluate_preventive_measures",
+        "search_knowledge_base",
+        "submit_action_plan"
+      ],
+      "cjk": false,
+      "latency_s": 13.8
+    },
+    {
+      "game_id": 14641,
+      "title": "Need for Speed Rivals",
+      "risk_level": "medium",
+      "p": 0.098,
+      "mode": "llm",
+      "llm_error": null,
+      "guardrail": false,
+      "policy_override": false,
+      "proposed": [
+        "EXTENDED_QA"
+      ],
+      "recorded": [
+        "EXTENDED_QA"
+      ],
+      "oracle": [
+        "CRITIC_PREVIEW_PR",
+        "EXTENDED_QA",
+        "PLAYTEST_FOCUS_GROUP"
+      ],
+      "exact_match": false,
+      "jaccard": 0.3333333333333333,
+      "net_recorded_k": 98.7,
+      "net_oracle_k": 189.0,
+      "tools_called": [
+        "get_prediction",
+        "explain_prediction",
+        "find_similar_games",
+        "get_publisher_track_record",
+        "evaluate_preventive_measures",
+        "search_knowledge_base",
+        "submit_action_plan"
+      ],
+      "cjk": false,
+      "latency_s": 13.6
+    },
+    {
+      "game_id": 14816,
+      "title": "Tom Clancy's Splinter Cell: Blacklist",
+      "risk_level": "medium",
+      "p": 0.113,
+      "mode": "llm",
+      "llm_error": null,
+      "guardrail": false,
+      "policy_override": false,
+      "proposed": [
+        "EXTENDED_QA"
+      ],
+      "recorded": [
+        "EXTENDED_QA"
+      ],
+      "oracle": [
+        "DELAY_RELEASE_POLISH",
+        "EXTENDED_QA",
+        "PLAYTEST_FOCUS_GROUP"
+      ],
+      "exact_match": false,
+      "jaccard": 0.3333333333333333,
+      "net_recorded_k": 187.5,
+      "net_oracle_k": 318.2,
+      "tools_called": [
+        "get_prediction",
+        "explain_prediction",
+        "find_similar_games",
+        "get_publisher_track_record",
+        "evaluate_preventive_measures",
+        "search_knowledge_base",
+        "submit_action_plan"
+      ],
+      "cjk": false,
+      "latency_s": 15.3
+    },
+    {
+      "game_id": 14943,
+      "title": "Dengeki Bunko Fighting Climax",
+      "risk_level": "medium",
+      "p": 0.109,
+      "mode": "llm",
+      "llm_error": null,
+      "guardrail": false,
+      "policy_override": false,
+      "proposed": [
+        "EXTENDED_QA"
+      ],
+      "recorded": [
+        "EXTENDED_QA"
+      ],
+      "oracle": [
+        "DELAY_RELEASE_POLISH",
+        "EXTENDED_QA",
+        "PLAYTEST_FOCUS_GROUP"
+      ],
+      "exact_match": false,
+      "jaccard": 0.3333333333333333,
+      "net_recorded_k": 235.3,
+      "net_oracle_k": 454.1,
+      "tools_called": [
+        "get_prediction",
+        "explain_prediction",
+        "find_similar_games",
+        "get_publisher_track_record",
+        "evaluate_preventive_measures",
+        "search_knowledge_base",
+        "submit_action_plan"
+      ],
+      "cjk": false,
+      "latency_s": 13.3
+    },
+    {
+      "game_id": 15298,
+      "title": "Sniper Elite 3",
+      "risk_level": "medium",
+      "p": 0.15,
+      "mode": "llm",
+      "llm_error": null,
+      "guardrail": false,
+      "policy_override": false,
+      "proposed": [
+        "EXTENDED_QA"
+      ],
+      "recorded": [
+        "EXTENDED_QA"
+      ],
+      "oracle": [
+        "DELAY_RELEASE_POLISH",
+        "EXTENDED_QA",
+        "PLAYTEST_FOCUS_GROUP"
+      ],
+      "exact_match": false,
+      "jaccard": 0.3333333333333333,
+      "net_recorded_k": 183.0,
+      "net_oracle_k": 305.4,
+      "tools_called": [
+        "get_prediction",
+        "explain_prediction",
+        "find_similar_games",
+        "get_publisher_track_record",
+        "evaluate_preventive_measures",
+        "search_knowledge_base",
+        "submit_action_plan"
+      ],
+      "cjk": false,
+      "latency_s": 14.8
+    },
+    {
+      "game_id": 15585,
+      "title": "Dynasty Warriors 8: Empires",
+      "risk_level": "medium",
+      "p": 0.147,
+      "mode": "llm",
+      "llm_error": null,
+      "guardrail": false,
+      "policy_override": false,
+      "proposed": [
+        "EXTENDED_QA"
+      ],
+      "recorded": [
+        "EXTENDED_QA"
+      ],
+      "oracle": [
+        "PLAYTEST_FOCUS_GROUP"
+      ],
+      "exact_match": false,
+      "jaccard": 0.0,
+      "net_recorded_k": -16.0,
+      "net_oracle_k": 4.3,
+      "tools_called": [
+        "get_prediction",
+        "explain_prediction",
+        "find_similar_games",
+        "get_publisher_track_record",
+        "evaluate_preventive_measures",
+        "search_knowledge_base",
+        "submit_action_plan"
+      ],
+      "cjk": false,
+      "latency_s": 11.8
+    },
+    {
+      "game_id": 15908,
+      "title": "Shovel Knight",
+      "risk_level": "medium",
+      "p": 0.099,
+      "mode": "llm",
+      "llm_error": null,
+      "guardrail": false,
+      "policy_override": false,
+      "proposed": [
+        "EXTENDED_QA"
+      ],
+      "recorded": [
+        "EXTENDED_QA"
+      ],
+      "oracle": [
+        "CRITIC_PREVIEW_PR",
+        "EXTENDED_QA",
+        "PLAYTEST_FOCUS_GROUP"
+      ],
+      "exact_match": false,
+      "jaccard": 0.3333333333333333,
+      "net_recorded_k": 100.5,
+      "net_oracle_k": 192.4,
+      "tools_called": [
+        "get_prediction",
+        "explain_prediction",
+        "find_similar_games",
+        "get_publisher_track_record",
+        "evaluate_preventive_measures",
+        "search_knowledge_base",
+        "submit_action_plan"
+      ],
+      "cjk": false,
+      "latency_s": 13.1
+    },
+    {
+      "game_id": 16063,
+      "title": "Agatha Christie's The ABC Murders",
+      "risk_level": "medium",
+      "p": 0.13,
+      "mode": "llm",
+      "llm_error": null,
+      "guardrail": false,
+      "policy_override": false,
+      "proposed": [
+        "EXTENDED_QA"
+      ],
+      "recorded": [
+        "EXTENDED_QA"
+      ],
+      "oracle": [
+        "EXTENDED_QA",
+        "MULTIPLATFORM_PORT",
+        "PLAYTEST_FOCUS_GROUP"
+      ],
+      "exact_match": false,
+      "jaccard": 0.3333333333333333,
+      "net_recorded_k": 205.6,
+      "net_oracle_k": 454.9,
+      "tools_called": [
+        "get_prediction",
+        "explain_prediction",
+        "find_similar_games",
+        "get_publisher_track_record",
+        "evaluate_preventive_measures",
+        "search_knowledge_base",
+        "submit_action_plan"
+      ],
+      "cjk": false,
+      "latency_s": 16.3
+    },
+    {
+      "game_id": 16303,
+      "title": "Mega Man Legacy Collection",
+      "risk_level": "medium",
+      "p": 0.102,
+      "mode": "llm",
+      "llm_error": null,
+      "guardrail": false,
+      "policy_override": false,
+      "proposed": [
+        "EXTENDED_QA"
+      ],
+      "recorded": [
+        "EXTENDED_QA"
+      ],
+      "oracle": [
+        "EXTENDED_QA",
+        "MULTIPLATFORM_PORT",
+        "PLAYTEST_FOCUS_GROUP"
+      ],
+      "exact_match": false,
+      "jaccard": 0.3333333333333333,
+      "net_recorded_k": 105.3,
+      "net_oracle_k": 179.6,
+      "tools_called": [
+        "get_prediction",
+        "explain_prediction",
+        "find_similar_games",
+        "get_publisher_track_record",
+        "evaluate_preventive_measures",
+        "search_knowledge_base",
+        "submit_action_plan"
+      ],
+      "cjk": false,
+      "latency_s": 15.5
+    },
+    {
+      "game_id": 14335,
+      "title": "Aliens: Colonial Marines",
+      "risk_level": "high",
+      "p": 0.607,
+      "mode": "llm",
+      "llm_error": null,
+      "guardrail": false,
+      "policy_override": false,
+      "proposed": [
+        "EXTENDED_QA"
+      ],
+      "recorded": [
+        "EXTENDED_QA"
+      ],
+      "oracle": [
+        "CRITIC_PREVIEW_PR",
+        "EXTENDED_QA",
+        "PLAYTEST_FOCUS_GROUP"
+      ],
+      "exact_match": false,
+      "jaccard": 0.3333333333333333,
+      "net_recorded_k": 122.0,
+      "net_oracle_k": 231.6,
+      "tools_called": [
+        "get_prediction",
+        "explain_prediction",
+        "find_similar_games",
+        "get_publisher_track_record",
+        "evaluate_preventive_measures",
+        "search_knowledge_base",
+        "submit_action_plan"
+      ],
+      "cjk": false,
+      "latency_s": 16.2
+    },
+    {
+      "game_id": 14430,
+      "title": "Disgaea D2: A Brighter Darkness",
+      "risk_level": "high",
+      "p": 0.222,
+      "mode": "llm",
+      "llm_error": null,
+      "guardrail": false,
+      "policy_override": false,
+      "proposed": [
+        "EXTENDED_QA"
+      ],
+      "recorded": [
+        "EXTENDED_QA"
+      ],
+      "oracle": [
+        "DELAY_RELEASE_POLISH",
+        "EXTENDED_QA",
+        "PLAYTEST_FOCUS_GROUP"
+      ],
+      "exact_match": false,
+      "jaccard": 0.3333333333333333,
+      "net_recorded_k": 540.7,
+      "net_oracle_k": 1322.1,
+      "tools_called": [
+        "get_prediction",
+        "explain_prediction",
+        "find_similar_games",
+        "get_publisher_track_record",
+        "evaluate_preventive_measures",
+        "search_knowledge_base",
+        "submit_action_plan"
+      ],
+      "cjk": false,
+      "latency_s": 14.8
+    },
+    {
+      "game_id": 14622,
+      "title": "Mugen Souls Z",
+      "risk_level": "high",
+      "p": 0.529,
+      "mode": "llm",
+      "llm_error": null,
+      "guardrail": false,
+      "policy_override": false,
+      "proposed": [
+        "EXTENDED_QA"
+      ],
+      "recorded": [
+        "EXTENDED_QA"
+      ],
+      "oracle": [
+        "DELAY_RELEASE_POLISH",
+        "EXTENDED_QA",
+        "PLAYTEST_FOCUS_GROUP"
+      ],
+      "exact_match": false,
+      "jaccard": 0.3333333333333333,
+      "net_recorded_k": 1367.5,
+      "net_oracle_k": 3671.6,
+      "tools_called": [
+        "get_prediction",
+        "explain_prediction",
+        "find_similar_games",
+        "get_publisher_track_record",
+        "evaluate_preventive_measures",
+        "search_knowledge_base",
+        "submit_action_plan"
+      ],
+      "cjk": false,
+      "latency_s": 16.6
+    },
+    {
+      "game_id": 14800,
+      "title": "The Smurfs 2",
+      "risk_level": "high",
+      "p": 0.559,
+      "mode": "llm",
+      "llm_error": null,
+      "guardrail": false,
+      "policy_override": false,
+      "proposed": [
+        "EXTENDED_QA"
+      ],
+      "recorded": [
+        "EXTENDED_QA"
+      ],
+      "oracle": [
+        "DELAY_RELEASE_POLISH",
+        "EXTENDED_QA",
+        "PLAYTEST_FOCUS_GROUP"
+      ],
+      "exact_match": false,
+      "jaccard": 0.3333333333333333,
+      "net_recorded_k": 913.4,
+      "net_oracle_k": 2380.9,
+      "tools_called": [
+        "get_prediction",
+        "explain_prediction",
+        "find_similar_games",
+        "get_publisher_track_record",
+        "evaluate_preventive_measures",
+        "search_knowledge_base",
+        "submit_action_plan"
+      ],
+      "cjk": false,
+      "latency_s": 16.1
+    },
+    {
+      "game_id": 14986,
+      "title": "Dynasty Warriors 8: Empires",
+      "risk_level": "high",
+      "p": 0.565,
+      "mode": "llm",
+      "llm_error": null,
+      "guardrail": false,
+      "policy_override": false,
+      "proposed": [
+        "EXTENDED_QA"
+      ],
+      "recorded": [
+        "EXTENDED_QA"
+      ],
+      "oracle": [
+        "DELAY_RELEASE_POLISH",
+        "EXTENDED_QA",
+        "PLAYTEST_FOCUS_GROUP"
+      ],
+      "exact_match": false,
+      "jaccard": 0.3333333333333333,
+      "net_recorded_k": 1092.5,
+      "net_oracle_k": 2890.0,
+      "tools_called": [
+        "get_prediction",
+        "explain_prediction",
+        "find_similar_games",
+        "get_publisher_track_record",
+        "evaluate_preventive_measures",
+        "search_knowledge_base",
+        "submit_action_plan"
+      ],
+      "cjk": false,
+      "latency_s": 14.7
+    },
+    {
+      "game_id": 15191,
+      "title": "NHL 15",
+      "risk_level": "high",
+      "p": 0.305,
+      "mode": "llm",
+      "llm_error": null,
+      "guardrail": false,
+      "policy_override": false,
+      "proposed": [
+        "EXTENDED_QA"
+      ],
+      "recorded": [
+        "EXTENDED_QA"
+      ],
+      "oracle": [
+        "DELAY_RELEASE_POLISH",
+        "EXTENDED_QA",
+        "MULTIPLATFORM_PORT"
+      ],
+      "exact_match": false,
+      "jaccard": 0.3333333333333333,
+      "net_recorded_k": 562.7,
+      "net_oracle_k": 1882.8,
+      "tools_called": [
+        "get_prediction",
+        "explain_prediction",
+        "find_similar_games",
+        "get_publisher_track_record",
+        "evaluate_preventive_measures",
+        "search_knowledge_base",
+        "submit_action_plan"
+      ],
+      "cjk": false,
+      "latency_s": 16.5
+    },
+    {
+      "game_id": 15326,
+      "title": "Tenkai Knights: Brave Battle",
+      "risk_level": "high",
+      "p": 0.617,
+      "mode": "llm",
+      "llm_error": null,
+      "guardrail": false,
+      "policy_override": false,
+      "proposed": [
+        "EXTENDED_QA"
+      ],
+      "recorded": [
+        "EXTENDED_QA"
+      ],
+      "oracle": [
+        "DELAY_RELEASE_POLISH",
+        "EXTENDED_QA",
+        "PLAYTEST_FOCUS_GROUP"
+      ],
+      "exact_match": false,
+      "jaccard": 0.3333333333333333,
+      "net_recorded_k": 735.3,
+      "net_oracle_k": 1875.0,
+      "tools_called": [
+        "get_prediction",
+        "explain_prediction",
+        "find_similar_games",
+        "get_publisher_track_record",
+        "evaluate_preventive_measures",
+        "search_knowledge_base",
+        "submit_action_plan"
+      ],
+      "cjk": false,
+      "latency_s": 16.8
+    },
+    {
+      "game_id": 15603,
+      "title": "Fairy Fencer F: Advent Dark Force",
+      "risk_level": "high",
+      "p": 0.184,
+      "mode": "llm",
+      "llm_error": null,
+      "guardrail": false,
+      "policy_override": false,
+      "proposed": [
+        "EXTENDED_QA"
+      ],
+      "recorded": [
+        "EXTENDED_QA"
+      ],
+      "oracle": [
+        "DELAY_RELEASE_POLISH",
+        "EXTENDED_QA",
+        "PLAYTEST_FOCUS_GROUP"
+      ],
+      "exact_match": false,
+      "jaccard": 0.3333333333333333,
+      "net_recorded_k": 238.4,
+      "net_oracle_k": 463.0,
+      "tools_called": [
+        "get_prediction",
+        "explain_prediction",
+        "find_similar_games",
+        "get_publisher_track_record",
+        "evaluate_preventive_measures",
+        "search_knowledge_base",
         "submit_action_plan"
       ],
       "cjk": false,
       "latency_s": 15.6
     },
     {
-      "game_id": 1077,
-      "title": "Dark Messiah of Might and Magic: Elements",
+      "game_id": 15901,
+      "title": "Senran Kagura: Estival Versus",
       "risk_level": "high",
-      "p": 0.32,
-      "mode": "llm",
-      "llm_error": null,
-      "guardrail": false,
-      "policy_override": false,
-      "proposed": [
-        "EXTENDED_QA"
-      ],
-      "recorded": [
-        "EXTENDED_QA"
-      ],
-      "oracle": [
-        "ADD_MULTIPLAYER",
-        "DELAY_RELEASE_POLISH",
-        "EXTENDED_QA"
-      ],
-      "exact_match": false,
-      "jaccard": 0.3333333333333333,
-      "net_recorded_k": 324.4,
-      "net_oracle_k": 702.3,
-      "tools_called": [
-        "get_prediction",
-        "explain_prediction",
-        "find_similar_games",
-        "get_publisher_track_record",
-        "evaluate_preventive_measures",
-        "submit_action_plan"
-      ],
-      "cjk": false,
-      "latency_s": 16.0
-    },
-    {
-      "game_id": 1119,
-      "title": "Ninja Reflex",
-      "risk_level": "high",
-      "p": 0.374,
+      "p": 0.262,
       "mode": "llm",
       "llm_error": null,
       "guardrail": false,
@@ -971,63 +1026,29 @@
       "oracle": [
         "DELAY_RELEASE_POLISH",
         "EXTENDED_QA",
-        "EXTEND_CONTENT"
-      ],
-      "exact_match": false,
-      "jaccard": 0.3333333333333333,
-      "net_recorded_k": 534.8,
-      "net_oracle_k": 1546.2,
-      "tools_called": [
-        "get_prediction",
-        "explain_prediction",
-        "find_similar_games",
-        "get_publisher_track_record",
-        "evaluate_preventive_measures",
-        "submit_action_plan"
-      ],
-      "cjk": false,
-      "latency_s": 12.0
-    },
-    {
-      "game_id": 1155,
-      "title": "Code Lyoko: Fall of X.A.N.A",
-      "risk_level": "high",
-      "p": 0.277,
-      "mode": "llm",
-      "llm_error": null,
-      "guardrail": false,
-      "policy_override": false,
-      "proposed": [
-        "EXTENDED_QA"
-      ],
-      "recorded": [
-        "EXTENDED_QA"
-      ],
-      "oracle": [
-        "EXTENDED_QA",
-        "EXTEND_CONTENT",
         "PLAYTEST_FOCUS_GROUP"
       ],
       "exact_match": false,
       "jaccard": 0.3333333333333333,
-      "net_recorded_k": 106.5,
-      "net_oracle_k": 400.1,
+      "net_recorded_k": 364.3,
+      "net_oracle_k": 820.6,
       "tools_called": [
         "get_prediction",
         "explain_prediction",
         "find_similar_games",
         "get_publisher_track_record",
         "evaluate_preventive_measures",
+        "search_knowledge_base",
         "submit_action_plan"
       ],
       "cjk": false,
-      "latency_s": 14.6
+      "latency_s": 13.0
     },
     {
-      "game_id": 1188,
-      "title": "Agatha Christie: Evil Under the Sun",
+      "game_id": 16159,
+      "title": "Dino Dini's Kick Off Revival",
       "risk_level": "high",
-      "p": 0.316,
+      "p": 0.761,
       "mode": "llm",
       "llm_error": null,
       "guardrail": false,
@@ -1039,24 +1060,25 @@
         "EXTENDED_QA"
       ],
       "oracle": [
-        "ADD_MULTIPLAYER",
         "DELAY_RELEASE_POLISH",
-        "EXTENDED_QA"
+        "EXTENDED_QA",
+        "PLAYTEST_FOCUS_GROUP"
       ],
       "exact_match": false,
       "jaccard": 0.3333333333333333,
-      "net_recorded_k": 443.1,
-      "net_oracle_k": 1159.3,
+      "net_recorded_k": 1172.1,
+      "net_oracle_k": 3116.1,
       "tools_called": [
         "get_prediction",
         "explain_prediction",
         "find_similar_games",
         "get_publisher_track_record",
         "evaluate_preventive_measures",
+        "search_knowledge_base",
         "submit_action_plan"
       ],
       "cjk": false,
-      "latency_s": 13.1
+      "latency_s": 15.0
     }
   ]
 }

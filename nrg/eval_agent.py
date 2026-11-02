@@ -59,7 +59,7 @@ def main(argv=None):
     if not llm_available():
         sys.exit(f"LLM server is not reachable at {config.LLM_BASE_URL}")
     p = get_predictor()
-    test_ids = p.specs.loc[p.specs["year"] == config.TEST_YEAR, "game_id"]
+    test_ids = p.specs.loc[(p.specs["year"] >= config.TEST_FROM_YEAR) & p.games["metrics_review_score"].notna().values, "game_id"]
     specs = {int(gid): p.spec_for_game(int(gid)) for gid in test_ids}
     proba = dict(zip(specs, p.predict_proba(list(specs.values()))))
     by_level = {"low": [], "medium": [], "high": []}

@@ -1,33 +1,93 @@
-[ 1/30] low    p=0.07 Grand Theft Auto IV           10.8s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
-[ 2/30] low    p=0.04 Guitar Hero: World Tour       13.9s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
-[ 3/30] low    p=0.12 NBA 2K9                       13.8s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
-[ 4/30] low    p=0.05 MLB 08: The Show              12.7s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
-[ 5/30] low    p=0.12 NHL 09                        11.4s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
-[ 6/30] low    p=0.06 The Sims 2: Apartment Pets    11.7s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
-[ 7/30] low    p=0.05 Apollo Justice: Ace Attorney  14.6s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
-[ 8/30] low    p=0.09 Beijing 2008                  12.8s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
-[ 9/30] low    p=0.13 NBA Ballers: Chosen One       11.5s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
-[10/30] low    p=0.11 Blitz: The League II          12.5s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
-[11/30] medium p=0.14 Mario Kart Wii                11.1s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
-[12/30] medium p=0.21 Army of Two                   12.2s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['EXTENDED_QA', 'EXTEND_CONTENT', 'PLAYTEST_FOCUS_GROUP']
-[13/30] medium p=0.17 BioShock                      16.3s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['EXTENDED_QA', 'EXTEND_CONTENT', 'PLAYTEST_FOCUS_GROUP']
-[14/30] medium p=0.18 Pure                          13.7s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['ADD_MULTIPLAYER', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
-[15/30] medium p=0.16 Spectrobes: Beyond the Porta  13.9s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['CRITIC_PREVIEW_PR', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
-[16/30] medium p=0.20 Silent Hill: Homecoming        3.3s llm=['ADD_MULTIPLAYER', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] -> ['ADD_MULTIPLAYER', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP'] | oracle=['ADD_MULTIPLAYER', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
-[17/30] medium p=0.20 Silent Hill: Homecoming       24.1s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['ADD_MULTIPLAYER', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
-[18/30] medium p=0.14 Dokapon Kingdom               12.3s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
-[19/30] medium p=0.20 The King of Fighters Collect  13.7s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['ADD_MULTIPLAYER', 'DELAY_RELEASE_POLISH', 'EXTENDED_QA']
-[20/30] medium p=0.20 Harvey Birdman: Attorney at   12.0s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
-[21/30] high   p=0.28 Kung Fu Panda                 13.7s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'EXTEND_CONTENT']
-[22/30] high   p=0.30 Star Wars: The Clone Wars -   11.7s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['CRITIC_PREVIEW_PR', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
-[23/30] high   p=0.52 Iron Man                      15.5s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
-[24/30] high   p=0.52 Iron Man                      14.1s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'EXTEND_CONTENT']
-[25/30] high   p=0.23 Castlevania: Order of Eccles  16.7s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['EXTENDED_QA', 'EXTEND_CONTENT', 'PLAYTEST_FOCUS_GROUP']
-[26/30] high   p=0.43 Lost: Via Domus               15.6s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'EXTEND_CONTENT']
-[27/30] high   p=0.32 Dark Messiah of Might and Ma  16.0s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['ADD_MULTIPLAYER', 'DELAY_RELEASE_POLISH', 'EXTENDED_QA']
-[28/30] high   p=0.37 Ninja Reflex                  12.0s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'EXTEND_CONTENT']
-[29/30] high   p=0.28 Code Lyoko: Fall of X.A.N.A   14.6s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['EXTENDED_QA', 'EXTEND_CONTENT', 'PLAYTEST_FOCUS_GROUP']
-[30/30] high   p=0.32 Agatha Christie: Evil Under   13.1s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['ADD_MULTIPLAYER', 'DELAY_RELEASE_POLISH', 'EXTENDED_QA']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[ 1/30] low    p=0.02 Assassin's Creed IV: Black F  30.3s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[ 2/30] low    p=0.02 Just Dance 2014               13.4s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[ 3/30] low    p=0.03 SimCity (2013)                15.5s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[ 4/30] low    p=0.03 Far Cry 4                     14.5s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[ 5/30] low    p=0.07 Project Spark                 12.6s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[ 6/30] low    p=0.03 Assassin's Creed: Rogue       12.0s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[ 7/30] low    p=0.01 LEGO Dimensions               13.2s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[ 8/30] low    p=0.04 The Order: 1886               14.4s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[ 9/30] low    p=0.09 Dragon Ball: Xenoverse 2      16.7s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[10/30] low    p=0.05 Paper Mario: Color Splash     15.1s llm=['EXTENDED_QA'] -> ['MONITOR_ONLY'] | oracle=['MONITOR_ONLY'] POLICY
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[11/30] medium p=0.10 Batman: Arkham Origins        15.9s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['MONITOR_ONLY']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[12/30] medium p=0.11 Drakengard 3                  13.8s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[13/30] medium p=0.10 Need for Speed Rivals         13.6s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['CRITIC_PREVIEW_PR', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[14/30] medium p=0.11 Tom Clancy's Splinter Cell:   15.3s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[15/30] medium p=0.11 Dengeki Bunko Fighting Clima  13.3s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[16/30] medium p=0.15 Sniper Elite 3                14.8s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[17/30] medium p=0.15 Dynasty Warriors 8: Empires   11.8s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['PLAYTEST_FOCUS_GROUP']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[18/30] medium p=0.10 Shovel Knight                 13.1s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['CRITIC_PREVIEW_PR', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[19/30] medium p=0.13 Agatha Christie's The ABC Mu  16.3s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['EXTENDED_QA', 'MULTIPLATFORM_PORT', 'PLAYTEST_FOCUS_GROUP']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[20/30] medium p=0.10 Mega Man Legacy Collection    15.5s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['EXTENDED_QA', 'MULTIPLATFORM_PORT', 'PLAYTEST_FOCUS_GROUP']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[21/30] high   p=0.61 Aliens: Colonial Marines      16.2s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['CRITIC_PREVIEW_PR', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[22/30] high   p=0.22 Disgaea D2: A Brighter Darkn  14.8s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[23/30] high   p=0.53 Mugen Souls Z                 16.6s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[24/30] high   p=0.56 The Smurfs 2                  16.1s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[25/30] high   p=0.56 Dynasty Warriors 8: Empires   14.7s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[26/30] high   p=0.30 NHL 15                        16.5s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'MULTIPLATFORM_PORT']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[27/30] high   p=0.62 Tenkai Knights: Brave Battle  16.8s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[28/30] high   p=0.18 Fairy Fencer F: Advent Dark   15.6s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[29/30] high   p=0.26 Senran Kagura: Estival Versu  13.0s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
+D:\Univer-Masterat\Machine-Learning\negative-review-guard\.venv\Lib\site-packages\shap\explainers\_tree.py:579: UserWarning: LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+  warnings.warn(
+[30/30] high   p=0.76 Dino Dini's Kick Off Revival  15.0s llm=['EXTENDED_QA'] -> ['EXTENDED_QA'] | oracle=['DELAY_RELEASE_POLISH', 'EXTENDED_QA', 'PLAYTEST_FOCUS_GROUP']
 {
   "tag": "3b",
   "model": "qwen2.5-3b-instruct-q4_k_m",
@@ -37,19 +97,19 @@
     "medium": 10,
     "high": 10
   },
-  "llm_success": 0.9666666666666667,
+  "llm_success": 1.0,
   "guardrail_rate": 0.0,
   "policy_override_rate": 0.3333333333333333,
-  "exact_match": 0.36666666666666664,
+  "exact_match": 0.3333333333333333,
   "exact_match_by_level": {
     "low": 1,
-    "medium": 0.1,
+    "medium": 0,
     "high": 0
   },
-  "mean_jaccard": 0.5777777777777777,
-  "net_value_ratio_med_high": 0.42485363873338744,
+  "mean_jaccard": 0.5333333333333333,
+  "net_value_ratio_med_high": 0.396781275617409,
   "cjk_rate": 0.0,
-  "latency_s_mean": 13.376666666666667,
-  "latency_s_p90": 16.0
+  "latency_s_mean": 15.213333333333333,
+  "latency_s_p90": 16.6
 }
 -> D:\Univer-Masterat\Machine-Learning\negative-review-guard\reports\agent_eval_3b.json

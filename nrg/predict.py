@@ -11,8 +11,8 @@ from . import config, db
 from .explain import Explainer
 from .features import build_features, games_to_specs, history_from_games
 
-SPEC_FIELDS = ["title", "console", "year", "rating", "genres", "publisher", "max_players", "main_story_hours",
-               "n_platforms", "is_sequel"]
+SPEC_FIELDS = ["title", "console", "year", "rating", "genres", "publisher", "developer", "max_players",
+               "main_story_hours", "n_platforms", "is_sequel"]
 
 
 class Predictor:
@@ -69,10 +69,11 @@ class Predictor:
         result = {"game_id": game_id, "title": spec["title"], "spec": spec, "proba_negative": p,
                   "risk_level": self.risk_level(p), "threshold": self.threshold, "model_name": self.model_name,
                   "explanation": exp, "features": {k: _py(v) for k, v in X.iloc[0].to_dict().items()}}
-        if game_id is not None:  # historical game -> show the real outcome for comparison
+        if game_id is not None:  # released game -> show the real outcome for comparison
             g = self.games[self.games["game_id"] == game_id].iloc[0]
-            result["actual_score"] = int(g["metrics_review_score"])
-            result["actual_negative"] = bool(g["metrics_review_score"] < config.NEGATIVE_THRESHOLD)
+            if pd.notna(g["metrics_review_score"]):
+                result["actual_score"] = int(g["metrics_review_score"])
+                result["actual_negative"] = bool(g["metrics_review_score"] < config.NEGATIVE_THRESHOLD)
         if save:
             result["prediction_id"] = db.save_prediction(game_id, spec["title"], spec, p, result["risk_level"],
                                                          self.model_name, exp["factors"])
@@ -81,9 +82,10 @@ class Predictor:
     # ---------- business context ----------
     def revenue_at_risk_k(self, console: str) -> float:
         """Median revenue gap (k$) between well-reviewed and negatively-reviewed games on this console."""
-        g = self.games[self.games["release_console"] == console]
+        scored = self.games[self.games["metrics_review_score"].notna() & self.games["metrics_sales"].notna()]
+        g = scored[scored["release_console"] == console]
         if len(g) < 20:
-            g = self.games
+            g = scored
         neg = g["metrics_review_score"] < config.NEGATIVE_THRESHOLD
         gap_m_units = max(g.loc[~neg, "metrics_sales"].median() - g.loc[neg, "metrics_sales"].median(), 0.05)
         return float(gap_m_units * 1e6 * config.AVG_UNIT_PRICE_USD / 1e3)
@@ -91,7 +93,7 @@ class Predictor:
     def similar_games(self, spec: dict, k: int = 5) -> list[dict]:
         """Nearest released games in the model's feature space (with their real outcome)."""
         X_new = self.pipeline[:-1].transform(self.features([spec]))
-        known = self.games["length_main_story_median"] > 0
+        known = self.games["metrics_review_score"].notna()
         if getattr(self, "_X_ref", None) is None:  # transformed reference games, computed once
             self._X_ref = self.pipeline[:-1].transform(build_features(self.specs[known], self.history))
         d = np.linalg.norm(self._X_ref - X_new, axis=1)
@@ -100,7 +102,8 @@ class Predictor:
         return [{"game_id": int(r.game_id), "title": r.title, "console": r.release_console,
                  "year": int(r.release_year), "publisher": _py(r.metadata_publishers) or "Unknown",
                  "genres": r.metadata_genres,
-                 "review_score": int(r.metrics_review_score), "sales_m_units": float(r.metrics_sales),
+                 "review_score": int(r.metrics_review_score),
+                 "sales_m_units": None if pd.isna(r.metrics_sales) else float(r.metrics_sales),
                  "distance": round(float(d[i]), 3)} for i, r in zip(idx, rows.itertuples())]
 
     def publisher_track_record(self, publisher: str) -> dict:

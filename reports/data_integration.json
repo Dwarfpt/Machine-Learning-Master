@@ -1,0 +1,18 @@
+{
+  "kaggle_rows": 16719,
+  "corgis_rows": 1212,
+  "games_rows": 16552,
+  "matched_both": 1099,
+  "kaggle_only": 15340,
+  "corgis_only": 113,
+  "with_critic_score": 8140,
+  "with_play_time": 906,
+  "platforms": 31,
+  "years": [
+    1980,
+    2016
+  ],
+  "score_conflicts_gt5": 7,
+  "score_mean_abs_diff": 0.14,
+  "generated_at": "2026-11-02T17:29:20+00:00"
+}

@@ -1,8 +1,9 @@
 {
-  "n_rows": 1212,
-  "n_cols": 37,
+  "n_rows": 16552,
+  "n_labelled": 8140,
   "issues": [
     {
+      "source": "CORGIS",
       "severity": "medium",
       "check": "missing_values",
       "detail": "metadata_publishers: 264 missing (21.8%)",
@@ -10,6 +11,7 @@
       "decision": "Publisher -> category 'Unknown'"
     },
     {
+      "source": "CORGIS",
       "severity": "info",
       "check": "duplicates",
       "detail": "304 titles appear on several consoles (not true duplicates: one row = one game x platform)",
@@ -17,6 +19,7 @@
       "decision": "Use as feature n_platforms"
     },
     {
+      "source": "CORGIS",
       "severity": "high",
       "check": "constant_column",
       "detail": "features_handheld has a single value (np.int64(1)) for all rows",
@@ -24,6 +27,7 @@
       "decision": "Drop; re-derive (handheld from console, multiplatform from titles, sequel from title pattern)"
     },
     {
+      "source": "CORGIS",
       "severity": "high",
       "check": "constant_column",
       "detail": "features_multiplatform has a single value (np.int64(1)) for all rows",
@@ -31,6 +35,7 @@
       "decision": "Drop; re-derive (handheld from console, multiplatform from titles, sequel from title pattern)"
     },
     {
+      "source": "CORGIS",
       "severity": "high",
       "check": "constant_column",
       "detail": "features_online has a single value (np.int64(1)) for all rows",
@@ -38,6 +43,7 @@
       "decision": "Drop; re-derive (handheld from console, multiplatform from titles, sequel from title pattern)"
     },
     {
+      "source": "CORGIS",
       "severity": "high",
       "check": "constant_column",
       "detail": "metadata_licensed has a single value (np.int64(1)) for all rows",
@@ -45,6 +51,7 @@
       "decision": "Drop; re-derive (handheld from console, multiplatform from titles, sequel from title pattern)"
     },
     {
+      "source": "CORGIS",
       "severity": "high",
       "check": "constant_column",
       "detail": "metadata_sequel has a single value (np.int64(1)) for all rows",
@@ -52,6 +59,7 @@
       "decision": "Drop; re-derive (handheld from console, multiplatform from titles, sequel from title pattern)"
     },
     {
+      "source": "CORGIS",
       "severity": "high",
       "check": "constant_column",
       "detail": "release_re_release has a single value (np.int64(1)) for all rows",
@@ -59,6 +67,7 @@
       "decision": "Drop; re-derive (handheld from console, multiplatform from titles, sequel from title pattern)"
     },
     {
+      "source": "CORGIS",
       "severity": "medium",
       "check": "zero_as_missing",
       "detail": "length_main_story_median == 0 for 306 games (25.2%) — nobody polled, 0 means 'unknown'",
@@ -66,6 +75,7 @@
       "decision": "Replace 0 by NaN, median imputation inside the model pipeline"
     },
     {
+      "source": "CORGIS",
       "severity": "low",
       "check": "outliers",
       "detail": "30 extreme main-story lengths (>3 IQR)",
@@ -73,77 +83,218 @@
       "decision": "keep (RPGs are long by nature); trees are robust, log1p for linear model"
     },
     {
+      "source": "CORGIS",
       "severity": "high",
       "check": "target_leakage",
       "detail": "Sales, used price and HowLongToBeat poll counts are only known after release",
       "affected_rows": null,
       "decision": "Excluded from model features; sales used only for business impact estimate"
+    },
+    {
+      "source": "Kaggle",
+      "severity": "high",
+      "check": "missing_values",
+      "detail": "critic_score: 8582 missing (51.3%)",
+      "affected_rows": 8582,
+      "decision": "no target -> not used for training (kept for sales / n_platforms)"
+    },
+    {
+      "source": "Kaggle",
+      "severity": "medium",
+      "check": "missing_values",
+      "detail": "year_of_release: 269 missing (1.6%)",
+      "affected_rows": 269,
+      "decision": "drop row"
+    },
+    {
+      "source": "Kaggle",
+      "severity": "medium",
+      "check": "missing_values",
+      "detail": "name: 2 missing (0.0%)",
+      "affected_rows": 2,
+      "decision": "drop row"
+    },
+    {
+      "source": "Kaggle",
+      "severity": "medium",
+      "check": "missing_values",
+      "detail": "developer: 6623 missing (39.6%)",
+      "affected_rows": 6623,
+      "decision": "developer prior = global prior (median imputation)"
+    },
+    {
+      "source": "Kaggle",
+      "severity": "medium",
+      "check": "missing_values",
+      "detail": "rating: 6769 missing (40.5%)",
+      "affected_rows": 6769,
+      "decision": "category 'Unknown'"
+    },
+    {
+      "source": "Kaggle",
+      "severity": "medium",
+      "check": "invalid_value",
+      "detail": "user_score = 'tbd' in 2425 rows (text in a numeric column)",
+      "affected_rows": 2425,
+      "decision": "-> NaN; user score is post-release anyway (not a feature)"
+    },
+    {
+      "source": "Kaggle",
+      "severity": "high",
+      "check": "range",
+      "detail": "4 release year(s) after the dataset date (Dec 2016)",
+      "affected_rows": 4,
+      "decision": "drop row"
+    },
+    {
+      "source": "Kaggle",
+      "severity": "medium",
+      "check": "duplicates",
+      "detail": "5 duplicated (name, platform) rows",
+      "affected_rows": 5,
+      "decision": "keep the row with higher sales"
+    },
+    {
+      "source": "Kaggle",
+      "severity": "low",
+      "check": "rare_category",
+      "detail": "rare ESRB codes {'EC': 8, 'K-A': 3, 'RP': 3, 'AO': 1}",
+      "affected_rows": 15,
+      "decision": "K-A, EC -> E; AO -> M; RP (pending) -> Unknown"
+    },
+    {
+      "source": "Kaggle",
+      "severity": "low",
+      "check": "outliers",
+      "detail": "10 extreme sales values (Wii Sports etc.)",
+      "affected_rows": 10,
+      "decision": "keep: real hits; sales only used for business impact (medians)"
+    },
+    {
+      "source": "Kaggle",
+      "severity": "high",
+      "check": "target_leakage",
+      "detail": "Sales, user score, critic/user counts are only known after release",
+      "affected_rows": null,
+      "decision": "Excluded from model features"
+    },
+    {
+      "source": "merge",
+      "severity": "info",
+      "check": "integration",
+      "detail": "1099 games matched in both sources (title + platform); critic score mean abs. difference 0.14",
+      "affected_rows": 1099,
+      "decision": "Kaggle score/genre/publisher/developer, CORGIS play time + max players"
     }
   ],
-  "missing": {
-    "metadata_publishers": 264
+  "sources": {
+    "corgis": {
+      "n_rows": 1212,
+      "n_cols": 37,
+      "missing": {
+        "metadata_publishers": 264
+      },
+      "duplicates": {
+        "full_rows": 0,
+        "same_title_other_platform": 304
+      },
+      "constant_columns": [
+        "features_handheld",
+        "features_multiplatform",
+        "features_online",
+        "metadata_licensed",
+        "metadata_sequel",
+        "release_re_release"
+      ],
+      "range_violations": {
+        "metrics_review_score": 0,
+        "release_year": 0,
+        "features_max_players": 0,
+        "metrics_sales": 0,
+        "metrics_used_price": 0
+      },
+      "length_zero_as_missing": {
+        "length_all_playstyles_average": 230,
+        "length_all_playstyles_leisure": 230,
+        "length_all_playstyles_median": 230,
+        "length_all_playstyles_rushed": 230,
+        "length_completionists_average": 542,
+        "length_completionists_leisure": 542,
+        "length_completionists_median": 542,
+        "length_completionists_rushed": 542,
+        "length_main_plus_extras_average": 504,
+        "length_main_plus_extras_leisure": 504,
+        "length_main_plus_extras_median": 504,
+        "length_main_plus_extras_rushed": 504,
+        "length_main_story_average": 306,
+        "length_main_story_leisure": 306,
+        "length_main_story_median": 306,
+        "length_main_story_rushed": 306
+      },
+      "length_inconsistent": 0,
+      "length_outliers_3iqr": 30,
+      "post_release_columns": [
+        "metrics_sales",
+        "metrics_used_price",
+        "length_all_playstyles_polled",
+        "length_completionists_polled",
+        "length_main_plus_extras_polled",
+        "length_main_story_polled"
+      ],
+      "target": {
+        "threshold": 60,
+        "negative_rate": 0.22772277227722773,
+        "n_negative": 276
+      },
+      "score_stats": {
+        "count": 1212.0,
+        "mean": 68.82838283828383,
+        "std": 12.956265876347192,
+        "min": 19.0,
+        "25%": 60.0,
+        "50%": 70.0,
+        "75%": 79.0,
+        "max": 98.0
+      },
+      "generated_at": "2026-11-02T18:18:15+00:00"
+    },
+    "kaggle": {
+      "n_rows": 16719,
+      "n_cols": 16
+    }
   },
-  "duplicates": {
-    "full_rows": 0,
-    "same_title_other_platform": 304
+  "integration": {
+    "kaggle_rows": 16719,
+    "corgis_rows": 1212,
+    "games_rows": 16552,
+    "matched_both": 1099,
+    "kaggle_only": 15340,
+    "corgis_only": 113,
+    "with_critic_score": 8140,
+    "with_play_time": 906,
+    "platforms": 31,
+    "years": [
+      1980,
+      2016
+    ],
+    "score_conflicts_gt5": 7,
+    "score_mean_abs_diff": 0.14,
+    "generated_at": "2026-11-02T17:29:20+00:00"
   },
-  "constant_columns": [
-    "features_handheld",
-    "features_multiplatform",
-    "features_online",
-    "metadata_licensed",
-    "metadata_sequel",
-    "release_re_release"
-  ],
-  "range_violations": {
-    "metrics_review_score": 0,
-    "release_year": 0,
-    "features_max_players": 0,
-    "metrics_sales": 0,
-    "metrics_used_price": 0
-  },
-  "length_zero_as_missing": {
-    "length_all_playstyles_average": 230,
-    "length_all_playstyles_leisure": 230,
-    "length_all_playstyles_median": 230,
-    "length_all_playstyles_rushed": 230,
-    "length_completionists_average": 542,
-    "length_completionists_leisure": 542,
-    "length_completionists_median": 542,
-    "length_completionists_rushed": 542,
-    "length_main_plus_extras_average": 504,
-    "length_main_plus_extras_leisure": 504,
-    "length_main_plus_extras_median": 504,
-    "length_main_plus_extras_rushed": 504,
-    "length_main_story_average": 306,
-    "length_main_story_leisure": 306,
-    "length_main_story_median": 306,
-    "length_main_story_rushed": 306
-  },
-  "length_inconsistent": 0,
-  "length_outliers_3iqr": 30,
-  "post_release_columns": [
-    "metrics_sales",
-    "metrics_used_price",
-    "length_all_playstyles_polled",
-    "length_completionists_polled",
-    "length_main_plus_extras_polled",
-    "length_main_story_polled"
-  ],
   "target": {
     "threshold": 60,
-    "negative_rate": 0.22772277227722773,
-    "n_negative": 276
+    "negative_rate": 0.2334152334152334,
+    "n_negative": 1900
   },
   "score_stats": {
-    "count": 1212.0,
-    "mean": 68.82838283828383,
-    "std": 12.956265876347192,
-    "min": 19.0,
+    "count": 8140.0,
+    "mean": 68.98906633906634,
+    "std": 13.89822248145495,
+    "min": 13.0,
     "25%": 60.0,
-    "50%": 70.0,
+    "50%": 71.0,
     "75%": 79.0,
     "max": 98.0
   },
-  "generated_at": "2026-10-09T10:22:04+00:00"
+  "generated_at": "2026-11-02T18:18:15+00:00"
 }

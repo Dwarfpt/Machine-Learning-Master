@@ -53,6 +53,11 @@ def load_json(name):
     return json.loads(p.read_text(encoding="utf-8")) if p.exists() else None
 
 
+def load_report(name):
+    p = config.REPORTS_DIR / name
+    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else None
+
+
 def model_ready() -> bool:
     if not (config.ARTIFACTS_DIR / "model.joblib").exists():
         st.error(t("no_model", lang))
@@ -85,9 +90,15 @@ def shap_chart(factors: list[dict], top: int = 10):
 # =============================================================== DASHBOARD
 def page_dashboard():
     st.title(t("app_title", lang))
-    df = games().copy()
+    all_games = games()
+    df = all_games[all_games["metrics_review_score"].notna()].copy()  # games with a critic score
     thr = config.NEGATIVE_THRESHOLD
     df["negative"] = df["metrics_review_score"] < thr
+    integ = load_report("data_integration.json")
+    if integ:
+        st.caption(t("sources_caption", lang, total=len(all_games), labelled=len(df), kaggle=integ["kaggle_rows"],
+                     corgis=integ["corgis_rows"], both=integ["matched_both"], platforms=integ["platforms"],
+                     y0=integ["years"][0], y1=integ["years"][1]))
     c1, c2, c3, c4 = st.columns(4)
     c1.metric(t("kpi_games", lang), len(df))
     c2.metric(t("kpi_negative", lang, thr=thr), f"{df['negative'].mean():.1%}")
@@ -116,6 +127,9 @@ def page_dashboard():
             d["publisher"] = d["metadata_publishers"].map(lambda p: (split_list(p) or ["Unknown"])[0])
             top = d["publisher"].value_counts().head(12).index
             d = d[d["publisher"].isin(top)]
+        if dim == "release_console":
+            top = d["release_console"].value_counts().head(14).index
+            d = d[d["release_console"].isin(top)]
         agg = d.groupby(dim).agg(rate=("negative", "mean"), n=("negative", "size")).reset_index()
         agg = agg.sort_values("rate")
         agg[dim] = agg[dim].astype(str)
@@ -150,17 +164,28 @@ def page_models():
     p = predictor()
     st.success(f"**{t('selected_model', lang)}: {p.model_name}** · threshold (calibrated) = {p.threshold:.2f}")
     st.caption(t("selection_rule", lang))
-    cols = ["model", "cv_pr_auc", "cv_roc_auc", "test_pr_auc", "test_roc_auc", "test_f1", "test_recall",
-            "test_precision", "test_brier"]
+    test_y = p.art.get("test_from_year", config.TEST_FROM_YEAR)
+    if "stage" not in comp:
+        comp["stage"], comp["family"] = "1-compare", ""
+    cols = ["stage", "model", "family", "cv_pr_auc", "cv_roc_auc", "test_pr_auc", "test_roc_auc", "test_f1",
+            "test_recall", "test_precision", "test_accuracy", "test_brier"]
+    cols = [c for c in cols if c in comp]
     st.subheader(t("model_comparison", lang))
-    st.dataframe(comp[cols].style.format({c: "{:.3f}" for c in cols[1:]}).highlight_max(
-        subset=["cv_pr_auc", "test_pr_auc", "test_roc_auc"], color="#cde2fb"), use_container_width=True, hide_index=True)
+    st.caption(t("stages_note", lang))
+    num = [c for c in cols if c.startswith(("cv_", "test_"))]
+    st.dataframe(comp.sort_values(["stage", "cv_pr_auc"], ascending=[True, False])[cols]
+                 .style.format({c: "{:.3f}" for c in num}).highlight_max(
+                     subset=["cv_pr_auc", "test_pr_auc", "test_roc_auc"], color="#cde2fb"),
+                 use_container_width=True, hide_index=True)
     cal = p.art.get("calibrated_test_metrics")
     if cal:
-        st.caption("Calibrated (Platt) production model on test 2008: " +
+        st.caption(f"Calibrated (Platt) production model on test {test_y}+: " +
                    " · ".join(f"{k.replace('test_', '')} {v:.3f}" for k, v in cal.items()))
 
     curves = load_json("curves.json")
+    shown = ["Baseline (majority)"] + comp[comp["model"] != "Baseline (majority)"].sort_values(
+        "cv_pr_auc", ascending=False)["model"].head(6).tolist()
+    curves = {k: v for k, v in curves.items() if k in shown}
     c1, c2 = st.columns(2)
     roc, pr = go.Figure(), go.Figure()
     for i, (name, cv) in enumerate(curves.items()):
@@ -170,9 +195,9 @@ def page_models():
         pr.add_trace(go.Scatter(x=cv["pr"]["recall"], y=cv["pr"]["precision"], name=name, mode="lines",
                                 line=dict(color=SERIES[i], width=width)))
     roc.add_trace(go.Scatter(x=[0, 1], y=[0, 1], mode="lines", line=dict(color="#aaa", dash="dot"), showlegend=False))
-    roc.update_layout(title="ROC (test 2008)", xaxis_title="FPR", yaxis_title="TPR", height=380,
+    roc.update_layout(title=f"ROC (test {test_y}+, top models)", xaxis_title="FPR", yaxis_title="TPR", height=380,
                       hovermode="x unified")
-    pr.update_layout(title="Precision–Recall (test 2008)", xaxis_title="Recall", yaxis_title="Precision",
+    pr.update_layout(title=f"Precision–Recall (test {test_y}+, top models)", xaxis_title="Recall", yaxis_title="Precision",
                      height=380, hovermode="x unified")
     c1.plotly_chart(roc, use_container_width=True)
     c2.plotly_chart(pr, use_container_width=True)
@@ -186,7 +211,35 @@ def page_models():
     c1.plotly_chart(fig, use_container_width=True)
     bees = config.REPORTS_DIR / "shap_beeswarm.png"
     if bees.exists():
-        c2.image(str(bees), caption="SHAP beeswarm (test 2008)")
+        c2.image(str(bees), caption=f"SHAP beeswarm (test {test_y}+)")
+
+    reg = load_json("regression_comparison.json")
+    if reg:
+        st.subheader(t("regression_title", lang))
+        st.caption(t("regression_note", lang))
+        r = pd.DataFrame(reg)
+        rc = ["model", "cv_mae", "cv_rmse", "cv_r2", "test_mae", "test_rmse", "test_r2", "test_pr_auc", "test_recall"]
+        st.dataframe(r[rc].style.format({c: "{:.3f}" for c in rc[1:]}).highlight_min(
+            subset=["cv_mae", "test_mae"], color="#cde2fb"), use_container_width=True, hide_index=True)
+    a_cls, a_reg = config.REPORTS_DIR / "automl_classification.csv", config.REPORTS_DIR / "automl_regression.csv"
+    if a_cls.exists():
+        st.subheader(t("automl_title", lang))
+        st.caption(t("automl_note", lang))
+        c1, c2 = st.columns(2)
+        ac = pd.read_csv(a_cls)
+        c1.markdown("**Classification (sorted by PR-AUC)**")
+        c1.dataframe(ac[[c for c in ["Model", "AUC", "Recall", "Prec.", "F1", "PR-AUC"] if c in ac]],
+                     use_container_width=True, hide_index=True)
+        if a_reg.exists():
+            ar = pd.read_csv(a_reg)
+            c2.markdown("**Regression (sorted by MAE)**")
+            c2.dataframe(ar[[c for c in ["Model", "MAE", "RMSE", "R2"] if c in ar]], use_container_width=True,
+                         hide_index=True)
+        summ = load_report("automl_summary.json")
+        if summ:
+            st.caption("PyCaret on the same test: " + " · ".join(
+                f"{k}: PR-AUC {v['test_pr_auc']:.3f}" for k, v in summ["classification"].items()
+                if isinstance(v, dict)))
 
 
 # =============================================================== PREDICT
@@ -195,8 +248,8 @@ def game_form(default: dict | None = None) -> dict | None:
     with st.form("game"):
         c1, c2, c3 = st.columns(3)
         title = c1.text_input(t("title", lang), d.get("title", "My New Game"))
-        console = c2.selectbox(t("console", lang), CONSOLES, index=CONSOLES.index(d.get("console", "Nintendo Wii")))
-        year = c3.number_input(t("year", lang), 2004, 2015, int(d.get("year", 2009)))
+        console = c2.selectbox(t("console", lang), CONSOLES, index=CONSOLES.index(d.get("console", "PlayStation 4")))
+        year = c3.number_input(t("year", lang), 1995, 2035, int(d.get("year", 2017)))
         c1, c2, c3 = st.columns(3)
         genres = c1.multiselect(t("genres", lang), GENRES, default=split_list(d.get("genres", "Action")))
         pubs = sorted(set(games()["metadata_publishers"].dropna().map(lambda p: split_list(p)[0])))
@@ -204,15 +257,17 @@ def game_form(default: dict | None = None) -> dict | None:
         opts = ["(unknown)"] + pubs
         publisher = c2.selectbox(t("publisher", lang), opts, index=opts.index(pub_default) if pub_default in opts else 0)
         rating = c3.selectbox(t("rating", lang), RATINGS, index=RATINGS.index(d.get("rating", "E")))
+        developer = st.text_input(t("developer", lang), d.get("developer", ""))
         c1, c2, c3, c4 = st.columns(4)
         max_players = c1.number_input(t("max_players", lang), 1, 16, int(d.get("max_players", 1)))
         hours = c2.number_input(t("main_story_hours", lang), 0.5, 200.0, float(d.get("main_story_hours") or 8.0), 0.5)
-        n_platforms = c3.number_input(t("n_platforms", lang), 1, 5, int(d.get("n_platforms", 1)))
+        n_platforms = c3.number_input(t("n_platforms", lang), 1, 8, int(d.get("n_platforms", 1)))
         is_sequel = c4.checkbox(t("is_sequel", lang), bool(d.get("is_sequel", False)))
         if not st.form_submit_button(t("predict_btn", lang), type="primary"):
             return None
     return {"title": title, "console": console, "year": int(year), "rating": rating,
             "genres": ",".join(genres) or "Action", "publisher": "" if publisher == "(unknown)" else publisher,
+            "developer": developer.strip(),
             "max_players": int(max_players), "main_story_hours": float(hours), "n_platforms": int(n_platforms),
             "is_sequel": is_sequel}
 
@@ -354,6 +409,18 @@ def page_monitoring():
             st.warning(f"⚠️ Retrain recommended: {', '.join(rep['drifted_features'])}")
         else:
             st.success("✅ No significant drift (release_year drifts by design and is excluded from the alarm)")
+    st.subheader(t("refresh_title", lang))
+    st.caption(t("refresh_note", lang))
+    from nrg import refresh
+    if st.button(t("refresh_btn", lang)):
+        with st.spinner("..."):
+            out = refresh.run()
+        games.clear()
+        predictor().reload_data()
+        st.json(out, expanded=False)
+    hist = refresh.history()
+    if not hist.empty:
+        st.dataframe(hist.drop(columns=["summary_json"]), use_container_width=True, hide_index=True)
     st.subheader(t("predictions_log", lang))
     log = db.list_predictions()
     if not log.empty:

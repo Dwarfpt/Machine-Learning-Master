@@ -558,6 +558,266 @@
           "name": "SMTP (Mailpit)"
         }
       }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "id": "860da970-2ecf-54cc-ab05-66f12de3ac95",
+      "name": "Every day 08:00",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        200,
+        900
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "nrg-refresh",
+        "options": {}
+      },
+      "id": "f4862d48-b9f3-523a-a806-184043c60029",
+      "name": "Webhook: refresh now",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        200,
+        1040
+      ],
+      "webhookId": "f100030e-4552-5977-ac7c-3a044b26f565"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.NRG_API_URL || 'http://host.docker.internal:8000' }}/data/refresh",
+        "options": {
+          "timeout": 600000
+        }
+      },
+      "id": "1f289f31-3fa8-5dc1-ba79-fda9d823d5fd",
+      "name": "Refresh data in API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        960
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "130Y3gp-JGCRp-rYKsrGTkT9pqRuFg-eIkeooN8ZEDnU",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Actions",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "event": "data_refresh",
+            "action_id": "",
+            "created_at": "={{ $json.finished_at ?? $json.started_at }}",
+            "title": "={{ ($json.files || []).map(f => f.file).join(', ') || 'no new files' }}",
+            "action_code": "",
+            "cost_k": "",
+            "expected_benefit_k": "",
+            "status": "={{ 'added ' + $json.added + ', invalid ' + $json.invalid + ', duplicates ' + $json.duplicates + ', high risk ' + ($json.high_risk_count ?? 0) }}",
+            "decided_by": "",
+            "proba_negative": "",
+            "risk_level": ""
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "event",
+              "displayName": "event",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "action_id",
+              "displayName": "action_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "action_code",
+              "displayName": "action_code",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cost_k",
+              "displayName": "cost_k",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "expected_benefit_k",
+              "displayName": "expected_benefit_k",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "decided_by",
+              "displayName": "decided_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "proba_negative",
+              "displayName": "proba_negative",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "risk_level",
+              "displayName": "risk_level",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "821d43de-6706-5c91-afdb-274709ec5e3b",
+      "name": "Log refresh to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        680,
+        960
+      ],
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "googleApi": {
+          "id": "nrgGoogleSa00001",
+          "name": "Google Service Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "6732c5a0-7148-590c-9276-800146061c1a",
+              "leftValue": "={{ ($('Refresh data in API').item.json.high_risk_count ?? 0) > 0 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "65c4b478-83ed-5cf9-8e95-d7dc744b2744",
+      "name": "Any high-risk new games?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        920,
+        960
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $env.NRG_MAIL_FROM || 'nrg-bot@example.com' }}",
+        "toEmail": "={{ $env.NRG_TEAM_EMAIL || 'dev-team@example.com' }}",
+        "subject": "=[NRG] {{ $('Refresh data in API').item.json.high_risk_count }} upcoming game(s) at high risk",
+        "emailFormat": "html",
+        "html": "=<h3>Daily data refresh</h3><p>New rows added: {{ $('Refresh data in API').item.json.added }}, invalid rows: {{ $('Refresh data in API').item.json.invalid }}.</p><p>Upcoming releases with a HIGH risk of a negative review:</p><ul>{{ $('Refresh data in API').item.json.high_risk.map(g => '<li><b>' + g.title + '</b> (' + g.console + ', ' + g.year + ') — ' + Math.round(g.proba_negative * 100) + '%</li>').join('') }}</ul><p>Open the app to run the AI agent for each of them.</p>",
+        "options": {}
+      },
+      "id": "56d720dc-430b-5010-a8bc-4e75ade0535a",
+      "name": "E-mail team (risky new games)",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1160,
+        960
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "nrgSmtpMailpit01",
+          "name": "SMTP (Mailpit)"
+        }
+      }
     }
   ],
   "connections": {
@@ -668,6 +928,61 @@
         [
           {
             "node": "E-mail team (approved task)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Every day 08:00": {
+      "main": [
+        [
+          {
+            "node": "Refresh data in API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook: refresh now": {
+      "main": [
+        [
+          {
+            "node": "Refresh data in API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Refresh data in API": {
+      "main": [
+        [
+          {
+            "node": "Log refresh to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log refresh to Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Any high-risk new games?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Any high-risk new games?": {
+      "main": [
+        [
+          {
+            "node": "E-mail team (risky new games)",
             "type": "main",
             "index": 0
           }

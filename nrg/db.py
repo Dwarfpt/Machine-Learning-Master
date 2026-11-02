@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import json
-import re
 import shutil
 import sqlite3
 from contextlib import contextmanager
@@ -66,26 +65,33 @@ def connect():
         conn.close()
 
 
-def _snake(col: str) -> str:
-    col = col.replace("?", "").replace("+", "plus")
-    return re.sub(r"[^0-9a-zA-Z]+", "_", col).strip("_").lower()
-
-
-def init_db(csv_path=None) -> int:
-    """(Re)load the raw CSV into the `games` table and create the operational tables."""
-    csv_path = csv_path or config.RAW_CSV
+def init_db() -> int:
+    """(Re)build the DB from both raw sources: `corgis_raw`, `kaggle_raw` (as delivered) and the unified
+    `games` table (see sources.py); creates the operational tables. Writes reports/data_integration.json."""
+    from . import sources  # local import: sources -> config only, avoids a cycle
     if not config.RAW_CSV.exists():
         config.RAW_CSV.parent.mkdir(parents=True, exist_ok=True)
         fallback = config.ROOT.parent / "Video_Games_Data.csv"
         if fallback.exists():
             shutil.copy(fallback, config.RAW_CSV)
-    df = pd.read_csv(csv_path)
-    df.columns = [_snake(c) for c in df.columns]
-    df.insert(0, "game_id", range(1, len(df) + 1))
+    corgis = sources.load_corgis()
+    kaggle = sources.load_kaggle()
+    games, report = sources.build_games(corgis, kaggle)
+    report["generated_at"] = now()
+    (config.REPORTS_DIR / "data_integration.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
     with connect() as conn:
-        df.to_sql("games", conn, if_exists="replace", index=False)
+        corgis.to_sql("corgis_raw", conn, if_exists="replace", index=False)
+        kaggle.to_sql("kaggle_raw", conn, if_exists="replace", index=False)
+        games.to_sql("games", conn, if_exists="replace", index=False)
         conn.executescript(SCHEMA)
-    return len(df)
+    return len(games)
+
+
+def load_raw(table: str) -> pd.DataFrame:
+    if table not in ("corgis_raw", "kaggle_raw"):
+        raise ValueError(table)
+    with connect() as conn:
+        return pd.read_sql(f"SELECT * FROM {table}", conn)
 
 
 def load_games() -> pd.DataFrame:

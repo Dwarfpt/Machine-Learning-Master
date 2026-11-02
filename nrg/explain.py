@@ -16,16 +16,26 @@ class Explainer:
         self.names = list(self.pre.get_feature_names_out())
         self.groups = feature_groups(self.names)
         bg = self.pre.transform(background)
+        self._permutation = False
         if isinstance(self.model, LogisticRegression):
             self._exp = shap.LinearExplainer(self.model, bg)
             self.output_space = "log-odds"
-        else:
+        elif _is_tree(self.model):
             self._exp = shap.TreeExplainer(self.model)
             # RandomForest explains probabilities, boosting models explain log-odds
             self.output_space = "probability" if hasattr(self.model, "estimators_") else "log-odds"
+        else:  # KNN, SVM, Naive Bayes, ensembles: model-agnostic permutation SHAP on the probability
+            bg = np.asarray(bg)[:60]
+            self._exp = shap.Explainer(lambda Z: self.model.predict_proba(Z)[:, 1],
+                                       shap.maskers.Independent(bg), algorithm="permutation")
+            self._permutation = True
+            self.output_space = "probability"
 
     def _raw_shap(self, X: pd.DataFrame) -> tuple[np.ndarray, float]:
         Xt = self.pre.transform(X)
+        if self._permutation:
+            e = self._exp(np.asarray(Xt, dtype=float), max_evals=2 * Xt.shape[1] + 1, silent=True)
+            return np.asarray(e.values), float(np.atleast_1d(e.base_values)[0])
         sv = self._exp.shap_values(Xt)
         base = self._exp.expected_value
         if isinstance(sv, list):  # older shap API for classifiers
@@ -52,9 +62,17 @@ class Explainer:
                 "factors": factors[:top_k], "all_factors": factors}
 
     def global_importance(self, X: pd.DataFrame) -> pd.DataFrame:
+        if self._permutation and len(X) > 300:  # permutation SHAP is slow -> representative sample
+            X = X.sample(300, random_state=0)
         g, _ = self.grouped_shap(X)
         return (g.abs().mean().sort_values(ascending=False).rename("mean_abs_shap").reset_index()
                 .rename(columns={"index": "feature"}))
+
+
+def _is_tree(model) -> bool:
+    name = type(model).__name__
+    return name in {"RandomForestClassifier", "ExtraTreesClassifier", "DecisionTreeClassifier", "XGBClassifier",
+                    "LGBMClassifier", "GradientBoostingClassifier", "HistGradientBoostingClassifier"}
 
 
 def _py(v):

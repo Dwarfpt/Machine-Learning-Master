@@ -40,7 +40,7 @@ def _add_multiplayer(s):
 
 def _port(s):
     n = s.get("n_platforms") or 1
-    return {**s, "n_platforms": n + 1} if n < 5 else None
+    return {**s, "n_platforms": n + 1} if n < 8 else None
 
 
 CATALOG: list[Measure] = [

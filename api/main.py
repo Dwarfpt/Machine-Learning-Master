@@ -13,7 +13,7 @@ from fastapi import FastAPI, HTTPException, Query  # noqa: E402
 from fastapi.responses import HTMLResponse  # noqa: E402
 from pydantic import BaseModel, Field  # noqa: E402
 
-from nrg import actions, automation, db  # noqa: E402
+from nrg import actions, automation, db, rag, refresh  # noqa: E402
 from nrg.agent import llm_available, run_agent  # noqa: E402
 from nrg.drift import drift_report  # noqa: E402
 from nrg.i18n import measure_name  # noqa: E402
@@ -25,14 +25,17 @@ app = FastAPI(title="Negative Review Guard API", version="1.0",
 
 class GameSpec(BaseModel):
     title: str = Field(examples=["Galactic Racer 2"])
-    console: str = Field(examples=["Nintendo Wii"], description="Nintendo DS | Sony PSP | Nintendo Wii | X360 | PlayStation 3")
-    year: int = Field(examples=[2009])
-    rating: str = Field(examples=["E"], description="E | T | M")
-    genres: str = Field(examples=["Racing / Driving"], description="comma separated")
+    console: str = Field(examples=["PlayStation 4"], description="platform, e.g. PlayStation 4 | Xbox One | PC | "
+                         "Nintendo 3DS | Wii U | Nintendo Wii | X360 | PlayStation 3 | Nintendo DS | Sony PSP ...")
+    year: int = Field(examples=[2017])
+    rating: str = Field(examples=["E"], description="E | E10+ | T | M")
+    genres: str = Field(examples=["Racing"], description="comma separated: Action, Sports, Shooter, Role-Playing, "
+                        "Racing, Misc, Platform, Simulation, Strategy, Fighting, Adventure, Puzzle")
     publisher: str = Field("", examples=["THQ"])
+    developer: str = Field("", examples=["Rushed Studio"])
     max_players: int = Field(1, ge=1, le=64)
     main_story_hours: float = Field(gt=0, examples=[6.0])
-    n_platforms: int = Field(1, ge=1, le=5)
+    n_platforms: int = Field(1, ge=1, le=8)
     is_sequel: bool | None = None
 
 
@@ -131,3 +134,21 @@ def execute(action_id: int, token: str = ""):
 @app.get("/monitoring/drift")
 def drift():
     return drift_report()
+
+
+@app.post("/data/refresh")
+def data_refresh():
+    """RPA: ingest new games from data/incoming/*.csv, score upcoming releases, refresh the knowledge base.
+    Called every morning by the n8n Schedule trigger; returns the summary that n8n e-mails / logs."""
+    return refresh.run()
+
+
+@app.get("/data/refresh/history")
+def data_refresh_history(limit: int = 20):
+    return refresh.history(limit).to_dict(orient="records")
+
+
+@app.get("/kb/search")
+def kb_search(q: str, k: int = 3):
+    """RAG: search the knowledge base the agent uses (playbook, policy, data insights, past decisions)."""
+    return rag.search(q, k)

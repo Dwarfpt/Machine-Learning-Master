@@ -1,106 +1,130 @@
 [
   {
-    "feature":"main_story_hours",
-    "mean_abs_shap":0.618422091
-  },
-  {
-    "feature":"genre_simulation",
-    "mean_abs_shap":0.2188736945
-  },
-  {
-    "feature":"is_sequel",
-    "mean_abs_shap":0.1962401569
-  },
-  {
-    "feature":"pub_prior_mean_score",
-    "mean_abs_shap":0.1885955632
-  },
-  {
-    "feature":"pub_prior_n_games",
-    "mean_abs_shap":0.1278465241
-  },
-  {
-    "feature":"n_platforms",
-    "mean_abs_shap":0.1101411209
-  },
-  {
-    "feature":"pub_prior_neg_rate",
-    "mean_abs_shap":0.108244516
-  },
-  {
-    "feature":"genre_role_playing_rpg",
-    "mean_abs_shap":0.1059744954
+    "feature":"dev_prior_mean_score",
+    "mean_abs_shap":0.8624372616
   },
   {
     "feature":"release_year",
-    "mean_abs_shap":0.105200775
+    "mean_abs_shap":0.7817133058
   },
   {
-    "feature":"console",
-    "mean_abs_shap":0.1009975895
+    "feature":"dev_prior_n_games",
+    "mean_abs_shap":0.3484849849
   },
   {
-    "feature":"max_players",
-    "mean_abs_shap":0.099693425
+    "feature":"n_platforms",
+    "mean_abs_shap":0.280774661
+  },
+  {
+    "feature":"is_sequel",
+    "mean_abs_shap":0.2742484458
+  },
+  {
+    "feature":"console_age",
+    "mean_abs_shap":0.244840386
+  },
+  {
+    "feature":"pub_prior_mean_score",
+    "mean_abs_shap":0.2041617406
   },
   {
     "feature":"publisher_main",
-    "mean_abs_shap":0.098030664
+    "mean_abs_shap":0.1916323576
   },
   {
-    "feature":"genre_strategy",
-    "mean_abs_shap":0.0663609356
+    "feature":"pub_prior_n_games",
+    "mean_abs_shap":0.1739558662
   },
   {
-    "feature":"n_genres",
-    "mean_abs_shap":0.0476904102
+    "feature":"pub_prior_neg_rate",
+    "mean_abs_shap":0.1286631966
   },
   {
-    "feature":"genre_sports",
-    "mean_abs_shap":0.0460626446
-  },
-  {
-    "feature":"n_publishers",
-    "mean_abs_shap":0.0411775671
+    "feature":"genre_role_playing",
+    "mean_abs_shap":0.1281691296
   },
   {
     "feature":"rating",
-    "mean_abs_shap":0.0314352997
+    "mean_abs_shap":0.121006322
   },
   {
-    "feature":"handheld",
-    "mean_abs_shap":0.029369764
-  },
-  {
-    "feature":"genre_racing_driving",
-    "mean_abs_shap":0.0247104466
-  },
-  {
-    "feature":"genre_adventure",
-    "mean_abs_shap":0.0210612193
-  },
-  {
-    "feature":"has_subtitle",
-    "mean_abs_shap":0.0182192754
+    "feature":"console",
+    "mean_abs_shap":0.1196271962
   },
   {
     "feature":"genre_action",
-    "mean_abs_shap":0.0178807527
+    "mean_abs_shap":0.1040871234
   },
   {
-    "feature":"is_multiplayer",
-    "mean_abs_shap":0.0144353956
+    "feature":"has_subtitle",
+    "mean_abs_shap":0.0716003565
+  },
+  {
+    "feature":"main_story_hours",
+    "mean_abs_shap":0.0580344403
+  },
+  {
+    "feature":"genre_shooter",
+    "mean_abs_shap":0.0431876187
+  },
+  {
+    "feature":"genre_strategy",
+    "mean_abs_shap":0.0355083495
+  },
+  {
+    "feature":"genre_sports",
+    "mean_abs_shap":0.0317146236
+  },
+  {
+    "feature":"genre_simulation",
+    "mean_abs_shap":0.0308301568
+  },
+  {
+    "feature":"handheld",
+    "mean_abs_shap":0.0210972901
+  },
+  {
+    "feature":"genre_puzzle",
+    "mean_abs_shap":0.0200787185
+  },
+  {
+    "feature":"developer_is_publisher",
+    "mean_abs_shap":0.0180908154
+  },
+  {
+    "feature":"genre_adventure",
+    "mean_abs_shap":0.0179461848
+  },
+  {
+    "feature":"n_genres",
+    "mean_abs_shap":0.0171252517
+  },
+  {
+    "feature":"genre_platform",
+    "mean_abs_shap":0.0165918759
   },
   {
     "feature":"is_multiplatform",
-    "mean_abs_shap":0.0047853878
+    "mean_abs_shap":0.0158943881
+  },
+  {
+    "feature":"genre_misc",
+    "mean_abs_shap":0.0122774893
+  },
+  {
+    "feature":"genre_racing",
+    "mean_abs_shap":0.0110436625
+  },
+  {
+    "feature":"genre_fighting",
+    "mean_abs_shap":0.0070049247
+  },
+  {
+    "feature":"max_players",
+    "mean_abs_shap":0.0052320908
   },
   {
     "feature":"publisher_unknown",
-    "mean_abs_shap":0.0039360258
-  },
-  {
-    "feature":"genre_educational",
-    "mean_abs_shap":0.0
+    "mean_abs_shap":0.0037230968
   }
 ]

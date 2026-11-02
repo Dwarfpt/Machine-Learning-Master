@@ -103,6 +103,48 @@ STR = {
     "status": ("Статус", "Stare", "Status"),
     "hours_unknown": ("длина неизвестна (подставлена медиана)", "durată necunoscută (mediană imputată)",
                       "length unknown (median imputed)"),
+    "developer": ("Разработчик (студия)", "Dezvoltator (studio)", "Developer (studio)"),
+    "sources_caption": ("Данные: {kaggle} строк Kaggle (VGChartz + Metacritic) + {corgis} строк CORGIS, {both} игр совпали "
+                        "в обоих источниках → {total} игр на {platforms} платформах ({y0}–{y1}), из них {labelled} "
+                        "с оценкой критиков.",
+                        "Date: {kaggle} rânduri Kaggle (VGChartz + Metacritic) + {corgis} rânduri CORGIS, {both} jocuri "
+                        "comune → {total} jocuri pe {platforms} platforme ({y0}–{y1}), dintre care {labelled} cu scor critic.",
+                        "Data: {kaggle} Kaggle rows (VGChartz + Metacritic) + {corgis} CORGIS rows, {both} games matched in "
+                        "both → {total} games on {platforms} platforms ({y0}–{y1}), {labelled} with a critic score."),
+    "stages_note": ("Этап 1 — сравнение 11 моделей разных семейств; этап 2 — подбор гиперпараметров трёх лучших "
+                    "(RandomizedSearch); этап 3 — комбинации пяти лучших: голосование большинством (3 из 5), "
+                    "усреднение вероятностей, стекинг. Победитель — по PR-AUC на 5-fold CV.",
+                    "Etapa 1 — 11 modele din familii diferite; etapa 2 — reglarea hiperparametrilor pentru top-3 "
+                    "(RandomizedSearch); etapa 3 — combinații ale top-5: vot majoritar (3 din 5), media probabilităților, "
+                    "stacking. Câștigătorul — după PR-AUC în 5-fold CV.",
+                    "Stage 1 — 11 models of different families; stage 2 — hyper-parameter tuning of the top 3 "
+                    "(RandomizedSearch); stage 3 — combinations of the top 5: majority vote (3 of 5), probability "
+                    "averaging, stacking. Winner — by PR-AUC in 5-fold CV."),
+    "regression_title": ("Регрессия: прогноз самой оценки (0–100)", "Regresie: prognoza scorului (0–100)",
+                         "Regression: predicting the score itself (0–100)"),
+    "regression_note": ("Те же признаки и тот же тест по времени. MAE — средняя ошибка в баллах; R² — доля объяснённой "
+                        "дисперсии. Для сравнения с классификацией прогноз < 60 считается «провалом» (PR-AUC, recall).",
+                        "Aceleași caracteristici și același test temporal. MAE — eroarea medie în puncte; R² — varianța "
+                        "explicată. Pentru comparație, prognoza < 60 = „eșec” (PR-AUC, recall).",
+                        "Same features and time-based test. MAE — mean error in points; R² — explained variance. "
+                        "For comparison with classification a predicted score < 60 counts as a flop (PR-AUC, recall)."),
+    "automl_title": ("AutoML (PyCaret): автоматический перебор моделей", "AutoML (PyCaret): selecție automată a modelelor",
+                     "AutoML (PyCaret): automatic model search"),
+    "automl_note": ("PyCaret на тех же признаках и том же тесте (отдельное окружение Python 3.11): compare_models → "
+                    "tune_model → blend_models / stack_models. Независимая проверка ручного выбора модели.",
+                    "PyCaret pe aceleași date și același test (mediu Python 3.11 separat): compare_models → tune_model "
+                    "→ blend_models / stack_models. Verificare independentă a selecției manuale.",
+                    "PyCaret on the same features and test (separate Python 3.11 env): compare_models → tune_model → "
+                    "blend_models / stack_models. An independent check of the hand-built model selection."),
+    "refresh_title": ("Автоматическое обновление данных (RPA)", "Actualizarea automată a datelor (RPA)",
+                      "Automatic data refresh (RPA)"),
+    "refresh_note": ("Новые игры кладутся CSV-файлом в data/incoming/. Каждое утро n8n запускает обновление: проверка "
+                     "строк → загрузка в БД → прогноз для ещё не вышедших игр → письмо команде со списком рискованных.",
+                     "Jocurile noi se pun ca fișier CSV în data/incoming/. În fiecare dimineață n8n pornește actualizarea: "
+                     "validare → încărcare în BD → prognoză pentru jocurile nelansate → e-mail echipei cu cele riscante.",
+                     "New games are dropped as a CSV into data/incoming/. Every morning n8n runs the refresh: validation "
+                     "→ load into the DB → risk for upcoming games → e-mail to the team with the risky ones."),
+    "refresh_btn": ("Обновить данные сейчас", "Actualizează datele acum", "Refresh data now"),
 }
 
 FEATURES = {
@@ -111,15 +153,21 @@ FEATURES = {
     "max_players": ("Макс. игроков", "Nr. maxim de jucători", "Max players"),
     "n_platforms": ("Число платформ", "Nr. platforme", "Number of platforms"),
     "n_genres": ("Число жанров", "Nr. genuri", "Number of genres"),
-    "n_publishers": ("Число издателей", "Nr. editori", "Number of publishers"),
+    "console_age": ("Возраст платформы на релизе (лет)", "Vârsta platformei la lansare (ani)",
+                    "Platform age at release (years)"),
     "pub_prior_mean_score": ("Ср. оценка прошлых игр издателя", "Scorul mediu anterior al editorului",
                              "Publisher's past mean score"),
     "pub_prior_neg_rate": ("Доля провалов издателя в прошлом", "Rata eșecurilor anterioare ale editorului",
                            "Publisher's past flop rate"),
     "pub_prior_n_games": ("Опыт издателя (игр ранее)", "Experiența editorului (jocuri anterioare)",
                           "Publisher experience (past games)"),
+    "dev_prior_mean_score": ("Ср. оценка прошлых игр студии", "Scorul mediu anterior al studioului",
+                             "Developer's past mean score"),
+    "dev_prior_n_games": ("Опыт студии (игр ранее)", "Experiența studioului (jocuri anterioare)",
+                          "Developer experience (past games)"),
+    "developer_is_publisher": ("Студия = издатель (first-party)", "Studio = editor (first-party)",
+                               "Developer is the publisher (first-party)"),
     "handheld": ("Портативная консоль", "Consolă portabilă", "Handheld console"),
-    "is_multiplayer": ("Мультиплеер", "Multiplayer", "Multiplayer"),
     "is_multiplatform": ("Мультиплатформа", "Multiplatformă", "Multiplatform"),
     "is_sequel": ("Сиквел", "Continuare", "Sequel"),
     "has_subtitle": ("Подзаголовок в названии", "Subtitlu în titlu", "Subtitle in title"),
@@ -129,12 +177,16 @@ FEATURES = {
     "publisher_main": ("Издатель", "Editor", "Publisher"),
     "genre_action": ("Жанр: Action", "Gen: Action", "Genre: Action"),
     "genre_sports": ("Жанр: Sports", "Gen: Sports", "Genre: Sports"),
-    "genre_strategy": ("Жанр: Strategy", "Gen: Strategy", "Genre: Strategy"),
-    "genre_role_playing_rpg": ("Жанр: RPG", "Gen: RPG", "Genre: RPG"),
-    "genre_racing_driving": ("Жанр: Racing", "Gen: Racing", "Genre: Racing"),
+    "genre_shooter": ("Жанр: Shooter", "Gen: Shooter", "Genre: Shooter"),
+    "genre_role_playing": ("Жанр: Role-Playing", "Gen: Role-Playing", "Genre: Role-Playing"),
+    "genre_racing": ("Жанр: Racing", "Gen: Racing", "Genre: Racing"),
+    "genre_misc": ("Жанр: Misc", "Gen: Misc", "Genre: Misc"),
+    "genre_platform": ("Жанр: Platform", "Gen: Platform", "Genre: Platform"),
     "genre_simulation": ("Жанр: Simulation", "Gen: Simulation", "Genre: Simulation"),
+    "genre_strategy": ("Жанр: Strategy", "Gen: Strategy", "Genre: Strategy"),
+    "genre_fighting": ("Жанр: Fighting", "Gen: Fighting", "Genre: Fighting"),
     "genre_adventure": ("Жанр: Adventure", "Gen: Adventure", "Genre: Adventure"),
-    "genre_educational": ("Жанр: Educational", "Gen: Educational", "Genre: Educational"),
+    "genre_puzzle": ("Жанр: Puzzle", "Gen: Puzzle", "Genre: Puzzle"),
 }
 
 MEASURES = {

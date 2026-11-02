@@ -6,7 +6,8 @@ Tools (the same functions are used by the LLM agent and by the rule-based fallba
   3. find_similar_games           – DB + model space: nearest released games and their real reviews/sales
   4. get_publisher_track_record   – DB: publisher history
   5. evaluate_preventive_measures – ML what-if simulation + cost/benefit of each measure
-  6. submit_action_plan           – writes actions to DB and triggers n8n (costly ones -> human approval)
+  6. search_knowledge_base        – RAG: measures playbook, company policy, data insights, past manager decisions
+  7. submit_action_plan           – writes actions to DB and triggers n8n (costly ones -> human approval)
 
 LLM: local GGUF model (default Qwen2.5-3B-Instruct) via llama-cpp-python, Qwen-native tool calling (see nrg/llm.py).
 If the model is not available the deterministic rule-based agent runs the same tools in a fixed order, so the system
@@ -17,7 +18,7 @@ from __future__ import annotations
 import json
 import re
 
-from . import actions, automation, config, db, llm
+from . import actions, automation, config, db, llm, rag
 from .i18n import factor_sentence, feature_label, measure_name, t
 from .predict import get_predictor
 
@@ -51,7 +52,7 @@ def explain_prediction(prediction_id: int, top_k: int = 6) -> dict:
     if not p:
         return {"error": f"prediction {prediction_id} not found"}
     factors = (p["explanation"] or [])[: int(top_k)]
-    return {"explanation_method": "SHAP (TreeExplainer), contributions summed per original feature",
+    return {"explanation_method": "SHAP, contributions summed per original feature",
             "factors": [{"feature": f["feature"], "label": feature_label(f["feature"], "en"),
                          "value": f["value"], "shap": round(f["shap"], 4), "direction": f["direction"]}
                         for f in factors]}
@@ -92,6 +93,19 @@ def evaluate_preventive_measures(prediction_id: int, _lang: str = "en") -> dict:
             "plan_cost_k_usd": ev["plan_cost_k"], "plan_expected_benefit_k_usd": round(ev["plan_expected_benefit_k"])}
 
 
+def search_knowledge_base(prediction_id: int, query: str = "") -> dict:
+    """RAG: retrieve playbook / policy / data-insight passages and past decisions relevant to this game."""
+    p = db.get_prediction(int(prediction_id))
+    if not p:
+        return {"error": f"prediction {prediction_id} not found"}
+    spec = p["input"]
+    risky = [feature_label(f["feature"], "en") for f in (p["explanation"] or []) if f["shap"] > 0][:3]
+    auto = f"{' '.join(risky)} {spec.get('genres') or ''} {spec.get('console') or ''} {spec.get('publisher') or ''}"
+    hits = rag.search(f"{query} {auto}".strip(), k=4)
+    return {"query": f"{query} {auto}".strip(), "passages": [
+        {"source": h["source"], "title": h["title"], "text": h["text"][:500], "relevance": h["score"]} for h in hits]}
+
+
 def submit_action_plan(prediction_id: int, action_codes: list[str], rationale: str, _source: str = "llm_agent") -> dict:
     p = db.get_prediction(int(prediction_id))
     if not p:
@@ -129,7 +143,7 @@ def submit_action_plan(prediction_id: int, action_codes: list[str], rationale: s
 
 
 TOOLS = {f.__name__: f for f in [get_prediction, explain_prediction, find_similar_games, get_publisher_track_record,
-                                 evaluate_preventive_measures, submit_action_plan]}
+                                 evaluate_preventive_measures, search_knowledge_base, submit_action_plan]}
 
 
 def _schema(name, desc, props, required):
@@ -150,6 +164,11 @@ TOOL_SCHEMAS = [
             _PID, ["prediction_id"]),
     _schema("evaluate_preventive_measures", "Simulate every preventive measure through the ML model and compute "
             "cost, expected benefit and net value in k$. Returns a recommended plan.", _PID, ["prediction_id"]),
+    _schema("search_knowledge_base", "Search the company knowledge base (measures playbook, policy, insights from "
+            "historical data, past manager decisions). Use it to ground your decision; the top risk factors of the "
+            "game are added to the query automatically.",
+            {**_PID, "query": {"type": "string", "description": "What to look for, e.g. 'short story licensed game'"}},
+            ["prediction_id"]),
     _schema("submit_action_plan", "Submit the final action plan. Creates tasks and triggers the n8n automation; "
             "expensive measures are sent to a manager for approval.",
             {**_PID, "action_codes": {"type": "array", "items": {
@@ -164,8 +183,8 @@ probability that a video game will receive a NEGATIVE critic review (score < {th
 this prediction into a decision.
 
 Procedure (use the tools, never invent numbers):
-Step 1 - call these five tools together in ONE answer: get_prediction, explain_prediction, find_similar_games,
-         get_publisher_track_record, evaluate_preventive_measures.
+Step 1 - call these six tools together in ONE answer: get_prediction, explain_prediction, find_similar_games,
+         get_publisher_track_record, evaluate_preventive_measures, search_knowledge_base.
 Step 2 - call submit_action_plan exactly once.
 Step 3 - write the final comment (no more tool calls).
 
@@ -173,7 +192,8 @@ Decision rules:
 - action_codes must be real codes such as "EXTENDED_QA" copied from evaluate_preventive_measures (never "A", "B").
 - Choose only measure codes returned by evaluate_preventive_measures, prefer positive net value and measures that
   target the top SHAP risk factors. Max 3 measures. If risk is low, submit ["MONITOR_ONLY"].
-- You may deviate from the recommended plan, but explain why.
+- You may deviate from the recommended plan, but explain why. Respect the company policy found in the
+  knowledge base and mention the passage you relied on.
 - Never claim an expensive measure is approved: they go to a human manager (Human-in-the-loop).
 
 Final answer (after submit_action_plan): an analyst comment of 3-5 sentences in {lang}: why you chose these
@@ -254,38 +274,56 @@ def _run_rules(prediction_id: int, lang: str) -> tuple[str, list]:
     sim = call("find_similar_games", prediction_id=prediction_id, k=5)
     pub = call("get_publisher_track_record", prediction_id=prediction_id)
     ev = call("evaluate_preventive_measures", prediction_id=prediction_id)
+    kb = call("search_knowledge_base", prediction_id=prediction_id)
     plan = ev["recommended_plan"]
     by_code = {m["code"]: m for m in ev["measures"]}
     rationale = "; ".join(f"{c}: net {by_code[c]['net_value_k_usd']} k$" for c in plan if c in by_code) or \
         "low risk – monitoring only"
     sub = call("submit_action_plan", prediction_id=prediction_id, action_codes=plan, rationale=rationale,
                _source="rule_based_agent")
-    return _compose_report(pred, exp, sim, pub, ev, sub, lang), trace
+    return _compose_report(pred, exp, sim, pub, ev, sub, lang, kb), trace
 
 
 _H = {
     "ru": ("Риск", "Главные причины (SHAP)", "Подтверждения", "Решение", "Ограничения",
            "Похожие вышедшие игры: негативных {neg}.", "Издатель {p}: {n} игр, средняя оценка {m}, доля провалов {r:.0%}.",
            "Издатель без истории в базе.", "Ожидает согласования менеджера", "Запущено автоматически",
-           "Модель обучена на ~900 играх 2004–2008 (PR-AUC ≈ 0.39 на тесте против 0.18 у базовой); эффект процессных мер "
+           "Модель обучена на {n} играх (PR-AUC {pr:.2f} на тесте против {base:.2f} у базовой линии); эффект процессных мер "
            "(QA, плейтест, PR) — экспертное допущение, а не вывод модели.",
            "Вероятность негативного отзыва: {p:.0%} (порог {thr:.0%}), уровень риска: {risk}."),
     "ro": ("Risc", "Cauzele principale (SHAP)", "Dovezi", "Decizie", "Limitări",
            "Jocuri similare lansate: negative {neg}.", "Editor {p}: {n} jocuri, scor mediu {m}, rata eșecurilor {r:.0%}.",
            "Editor fără istoric în bază.", "Așteaptă aprobarea managerului", "Lansat automat",
-           "Modelul este antrenat pe ~900 de jocuri din 2004–2008 (PR-AUC ≈ 0.39 vs 0.18 la bază); efectul "
+           "Modelul este antrenat pe {n} de jocuri (PR-AUC {pr:.2f} pe test vs {base:.2f} la bază); efectul "
            "măsurilor de proces (QA, playtest, PR) este o ipoteză de expert, nu o ieșire a modelului.",
            "Probabilitatea unei recenzii negative: {p:.0%} (prag {thr:.0%}), nivel de risc: {risk}."),
     "en": ("Risk", "Main reasons (SHAP)", "Evidence", "Decision", "Caveats",
            "Similar released games: {neg} negative.", "Publisher {p}: {n} games, mean score {m}, flop rate {r:.0%}.",
            "Publisher has no history in the DB.", "Waiting for manager approval", "Started automatically",
-           "The model is trained on ~900 games from 2004–2008 (PR-AUC ≈ 0.39 vs 0.18 baseline); the effect of "
+           "The model is trained on {n} games (test PR-AUC {pr:.2f} vs {base:.2f} baseline); the effect of "
            "process measures (QA, playtest, PR) is an expert assumption, not a model output.",
            "Probability of a negative review: {p:.0%} (threshold {thr:.0%}), risk level: {risk}."),
 }
 
 
-def _compose_report(pred, exp, sim, pub, ev, sub, lang) -> str:
+_KB = {"ru": "Из базы знаний (RAG)", "ro": "Din baza de cunoștințe (RAG)", "en": "From the knowledge base (RAG)"}
+
+
+def _model_facts() -> dict:
+    """Sample size and test PR-AUC of the production model vs the majority baseline (for the caveats line)."""
+    art = get_predictor().art
+    pr = float(art.get("calibrated_test_metrics", {}).get("test_pr_auc")
+               or art["selected_metrics"].get("test_pr_auc", 0))
+    base = 0.0
+    try:
+        rows = json.loads((config.ARTIFACTS_DIR / "model_comparison.json").read_text(encoding="utf-8"))
+        base = next(float(r["test_pr_auc"]) for r in rows if r["model"].startswith("Baseline"))
+    except Exception:
+        pass
+    return {"n": art.get("n_train", 0), "pr": pr, "base": base}
+
+
+def _compose_report(pred, exp, sim, pub, ev, sub, lang, kb=None) -> str:
     h = _H[lang]
     lines = [f"### {pred['title']}", f"**{h[0]}.** " + h[11].format(p=pred["proba_negative"],
              thr=pred["decision_threshold"], risk=t("risk_" + pred["risk_level"], lang))]
@@ -296,6 +334,8 @@ def _compose_report(pred, exp, sim, pub, ev, sub, lang) -> str:
                  ", ".join(f"{g['title']} ({g['console']}, {g['review_score']})" for g in sim["similar_games"][:3]))
     lines.append("- " + (h[6].format(p=pub["publisher"], n=pub["n_games"], m=pub["mean_score"], r=pub["negative_rate"])
                          if pub.get("n_games") else h[7]))
+    for psg in (kb or {}).get("passages", [])[:2]:
+        lines.append(f"- {_KB[lang]}: *{psg['title']}* — {psg['text'][:160].rstrip()}…")
     # totals for the measures that were ACTUALLY created (the LLM may deviate from the recommended plan)
     codes = [a["code"] for a in sub["created_actions"] if a["code"] in actions.BY_CODE]
     p1 = actions.plan_probability(get_predictor(), pred["game_spec"], ev["p_before"], codes)
@@ -305,7 +345,7 @@ def _compose_report(pred, exp, sim, pub, ev, sub, lang) -> str:
     for a in sub["created_actions"]:
         status = h[8] if a["status"] == "pending_approval" else h[9]
         lines.append(f"- **{measure_name(a['code'], lang)}** (#{a['action_id']}) — {status}")
-    lines.append(f"\n**{h[4]}:** {h[10]}")
+    lines.append(f"\n**{h[4]}:** " + h[10].format(**_model_facts()))
     return "\n".join(lines)
 
 
@@ -336,7 +376,9 @@ def run_agent(prediction_id: int, lang: str = "ru", force_rule_based: bool = Fal
         pred = get_prediction(prediction_id)
         facts = _compose_report(pred, explain_prediction(prediction_id), find_similar_games(prediction_id),
                                 get_publisher_track_record(prediction_id),
-                                evaluate_preventive_measures(prediction_id, lang), {"created_actions": created}, lang)
+                                evaluate_preventive_measures(prediction_id, lang), {"created_actions": created}, lang,
+                                next((s["result"] for s in trace if s["tool"] == "search_knowledge_base"), None)
+                                or search_knowledge_base(prediction_id))
         answer = f"{facts}\n\n**{_COMMENT[lang]}:**\n\n{answer.strip()}"
         if any(step["args"].get("guardrail") for step in trace):
             answer += "\n\n⚠️ " + _GUARDRAIL_NOTE[lang]

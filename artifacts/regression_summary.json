@@ -1,0 +1,6 @@
+{
+  "best_model": "Average of top-3",
+  "test_mae": 8.552787325374263,
+  "test_r2": 0.23108419179066098,
+  "test_flop_pr_auc": 0.34234652184512315
+}

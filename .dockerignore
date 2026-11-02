@@ -8,3 +8,4 @@ models
 .env
 n8n/google_service_account.json
 n8n/credentials_google.json
+.venv-automl

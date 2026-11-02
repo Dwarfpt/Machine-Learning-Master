@@ -9,6 +9,10 @@ Flow 2  (POST /webhook/nrg-decision, sent by the API after the manager clicked a
     Webhook -> Log decision to Google Sheets -> Approved?
         yes -> Mark executed in API -> E-mail team "approved task"
         no  -> E-mail team "rejected, nothing to do"
+Flow 3  (RPA data refresh: every day at 08:00, or POST /webhook/nrg-refresh for a demo)
+    Schedule / Webhook -> POST /data/refresh in API (ingest data/incoming/*.csv, score upcoming games)
+        -> Log refresh to Google Sheets -> Any high-risk new games?
+            yes -> E-mail team the list of risky upcoming releases
 
 E-mail addresses come from n8n environment variables (set in .env, passed by docker-compose):
     NRG_MAIL_FROM, NRG_MANAGER_EMAIL, NRG_TEAM_EMAIL
@@ -137,6 +141,31 @@ nodes = [
 ]
 
 
+REFRESH_URL = API[:-3] + " }}/data/refresh"
+refresh_cols = {"event": "data_refresh", "created_at": "={{ $json.finished_at ?? $json.started_at }}",
+                "title": "={{ ($json.files || []).map(f => f.file).join(', ') || 'no new files' }}",
+                "status": "={{ 'added ' + $json.added + ', invalid ' + $json.invalid + ', duplicates ' "
+                          "+ $json.duplicates + ', high risk ' + ($json.high_risk_count ?? 0) }}"}
+refresh_log = sheets_log("Log refresh to Google Sheets", A, "data_refresh", [680, 960])
+refresh_log["parameters"]["columns"]["value"] = {c: refresh_cols.get(c, "") for c in SHEET_COLS}
+nodes += [
+    node("Every day 08:00", "n8n-nodes-base.scheduleTrigger", 1.2, [200, 900],
+         {"rule": {"interval": [{"field": "days", "triggerAtHour": 8}]}}),
+    webhook("Webhook: refresh now", "nrg-refresh", [200, 1040]),
+    node("Refresh data in API", "n8n-nodes-base.httpRequest", 4.2, [440, 960],
+         {"method": "POST", "url": REFRESH_URL, "options": {"timeout": 600000}}),
+    refresh_log,
+    if_true("Any high-risk new games?", "={{ ($('Refresh data in API').item.json.high_risk_count ?? 0) > 0 }}", [920, 960]),
+    email("E-mail team (risky new games)", TEAM,
+          "=[NRG] {{ $('Refresh data in API').item.json.high_risk_count }} upcoming game(s) at high risk",
+          "=<h3>Daily data refresh</h3><p>New rows added: {{ $('Refresh data in API').item.json.added }}, "
+          "invalid rows: {{ $('Refresh data in API').item.json.invalid }}.</p><p>Upcoming releases with a HIGH "
+          "risk of a negative review:</p><ul>{{ $('Refresh data in API').item.json.high_risk.map(g => '<li><b>' + "
+          "g.title + '</b> (' + g.console + ', ' + g.year + ') — ' + Math.round(g.proba_negative * 100) + "
+          "'%</li>').join('') }}</ul><p>Open the app to run the AI agent for each of them.</p>", [1160, 960]),
+]
+
+
 def link(*pairs):
     conns = {}
     for src, dst, out in pairs:
@@ -160,6 +189,11 @@ connections = link(
     ("Approved?", "Mark executed (approved)", 0),
     ("Approved?", "E-mail team (rejected)", 1),
     ("Mark executed (approved)", "E-mail team (approved task)", 0),
+    ("Every day 08:00", "Refresh data in API", 0),
+    ("Webhook: refresh now", "Refresh data in API", 0),
+    ("Refresh data in API", "Log refresh to Google Sheets", 0),
+    ("Log refresh to Google Sheets", "Any high-risk new games?", 0),
+    ("Any high-risk new games?", "E-mail team (risky new games)", 0),
 )
 
 workflow = {"id": "nrgActionRouter1", "name": "Negative Review Guard — action router (HITL)", "nodes": nodes,

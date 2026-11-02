@@ -19,7 +19,7 @@ OUTBOX_PATH = Path(os.getenv("NRG_OUTBOX_PATH", DATA_DIR / "outbox.jsonl"))  # f
 # Target: a game "gets a negative review" if its critic score is below this threshold.
 NEGATIVE_THRESHOLD = int(os.getenv("NRG_NEGATIVE_THRESHOLD", 60))
 RANDOM_STATE = 42
-TEST_YEAR = 2008  # time-based split: train on 2004-2007, test on 2008 releases
+TEST_FROM_YEAR = 2013  # time-based split: train on releases up to 2012, test on 2013-2016
 
 # Business assumptions (used by the decision module and the agent)
 AVG_UNIT_PRICE_USD = float(os.getenv("NRG_AVG_UNIT_PRICE_USD", 40))
